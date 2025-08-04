@@ -51,7 +51,7 @@
             color: #fff;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
             position: absolute;
-            left: 140px;
+            left: 160px;
             top: 50%;
         }
 
@@ -59,13 +59,13 @@
             width: 150px;
             height: 150px;
             vertical-align: middle;
-            margin-right: 10px;
+            margin-right: 50px;
             margin-top: 5px;
             margin-left: 10px;
         }
 
         .directory {
-            height: 80%; 
+            height: 120%; 
             width: 13%;
             background: #457b9d;
         }
@@ -78,6 +78,7 @@
             margin: 0;
             background: #05a4e4;
             /**border-radius: 10px;*/
+
         }
 
         .directory h2 {
@@ -87,23 +88,156 @@
             font-size: 1.2em;
             margin: 0;
         }
+        .main-content {
+            display: flex;
+            flex: 1;
+            position: relative;
+            height: 100%;
+        }
 
+        .content-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .addBook-screen {
+            /**margin-top: 60px;
+            margin-bottom: 30px;*/
+            
+            background: linear-gradient(135deg, #a8dadc 0%, #457b9d 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px; 
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 450px;
+            width: 80%;
+            opacity: 0;
+            justify-content: center;
+            transform: translateY(20px);
+            animation: fadeInSlideUp 1s forwards ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-sizing: border-box;
+        }
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .addBook-screen img {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 25px;
+            border-radius: 50%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            border: 4px solid #f1faee;
+        }
+
+        .addBook-screen h1 {
+            font-size: 2.5em;
+            color: #1d3557;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .addBook-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 1em;
+            color: #1d3557;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #457b9d;
+            box-shadow: 0 0 5px rgba(69, 123, 157, 0.3);
+        }
+
+        .addBook-button {
+            background-color: #457b9d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .addBook-button:hover {
+            background-color: #1d3557;
+        }
+
+       
 
         
     </style>
 </head>
 <body>
     <div class="header">
-        <h1><img src="Gemini_Generated_Image_6s5iy16s5iy16s5i.png" alt="LM Logo"> Library Manage App</h1> 
+        <h1><img src="addbook.png" alt="LM Logo"> Library Manage App</h1> 
         <h2>Thêm những cuốn sách mới vào kho</h2>
     </div>
-    <div class="directory">
-        <h1>Thư Mục</h1>
-        <ul>
-            <li><a href="AddBook.html">Thêm Sách</a></li>
-            <li><a href="AvailableBook.html">Sách Chưa Mượn</a></li>
-            <li><a href="BorrowedBook.html">Sách Đã Mượn</a></li>
-            <li><a href="Index.html">Trang Chủ</a></li>
-        </ul>
+    <div class="main-content">
+        <div class="directory">
+            <h1>Thư Mục</h1>
+            <ul>
+                <li><a href="AddBook.html">Thêm Sách</a></li>
+                <li><a href="AvailableBook.html">Sách Chưa Mượn</a></li>
+                <li><a href="BorrowedBook.html">Sách Đã Mượn</a></li>
+                <li><a href="Index.html">Trang Chủ</a></li>
+            </ul>
+        </div>
+        <div class="content-area">
+            
+            <div class="addBook-screen">
+                <img src="addbook.png" alt="Add Book Icon">
+                <h1>Thêm Sách Mới</h1>
+                <form class="addBook-form" action="/addbook" method="POST">
+                    <div class="form-group">
+                        <label for="title">Tiêu Đề</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Tác Giả</label>
+                        <input type="text" id="author" name="author" required>
+                    </div>
+                    <button type="submit" class="addBook-button">Thêm Sách</button>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
