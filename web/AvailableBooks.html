@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chào Mừng Đến Với Library Manage App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff; 
+            color: #333;
+            /**display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;*/
+            height: 100vh;
+            width: 100%;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .header {
+            margin-top: 0px;
+            width: 100%;
+            height: 20%;
+            padding: 20px 0;
+            background: #457b9d; 
+            position: relative;
+            margin-bottom: 0;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header h1 {
+            font-size: 2em;
+            margin: 0;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .header h2 {
+            font-size: 1.5em;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            position: absolute;
+            left: 160px;
+            top: 50%;
+        }
+
+        .header img {
+            width: 150px;
+            height: 150px;
+            vertical-align: middle;
+            margin-right: 50px;
+            margin-top: 5px;
+            margin-left: 10px;
+        }
+
+        .directory {
+            height: 100%; 
+            width: 13%;
+            background: #457b9d;
+        }
+
+        .directory h1 {
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.5em;
+            margin: 0;
+            background: #05a4e4;
+            /**border-radius: 10px;*/
+
+        }
+
+        .directory h2 {
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+            position: relative;
+            height: 150%;
+            width: 100%;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+            width: 100%;
+        }
+
+        .book-item {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+         .book-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .book-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1d3557;
+            margin-bottom: 15px;
+        } 
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2em;
+            color: #6c757d;
+        }
+
+        .error {
+            text-align: center;
+            padding: 40px;
+            background: #f8d7da;
+            color: #721c24;
+            border-radius: 8px;
+            margin: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><img src="sachchuamuon.png" alt="sachchuamuon">Library Manage App</h1>
+        <h2>Danh sách những cuốn sách có sẵn</h2>
+    </div>
+    <div class="main-content">
+        <div class="directory">
+            <h1>Thư Mục</h1>
+            <ul>
+                <li><a href="AddBook.html">Thêm Sách</a></li>
+                <li><a href="BorrowedBook.html">Sách Đã Mượn</a></li>
+                <li><a href="Index.html">Trang Chủ</a></li>
+            </ul>
+        </div>
+        <div class="content-area">
+                <h1 style="color: #1d3557; margin-bottom: 30px;">📚 Sách Có Sẵn</h1>
+                <div id="loadingMessage" class="loading">Đang tải danh sách sách...</div>
+                <div id="errorMessage" class="error" style="display: none;"></div>
+                <div id="booksContainer" class="books-container" style="display: none;"></div>
+        </div>
+    </div>
+    <script>
+        /***
+         * Function to fetch available books from the API and display them
+         * This url just a placeholder, replace it when we have actual API endpoint
+         */
+        const API_BASE_URL = 'http://localhost:8080/api';
+        async function loadAvailableBooks() {
+            try {
+                showLoading();
+                console.log('Fetching books from Java backend...');
+                
+                const response = await fetch(`${API_BASE_URL}?action=available`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const books = await response.json();
+                console.log('Books loaded from database:', books);
+                displayBooks(books);
+                
+            } catch (error) {
+                console.error('Error loading books:', error);
+                
+                if (error.name === 'TypeError') {
+                    showError('Không thể kết nối đến server Java. Kiểm tra server có đang chạy không?');
+                } else {
+                    showError('Lỗi tải dữ liệu: ' + error.message);
+                }
+            }
+        }
+
+        function displayBooks(books) {
+            const container = document.getElementById('booksContainer');
+            const loadingMessage = document.getElementById('loadingMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            if (!books || books.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #6c757d; font-size: 1.2em;">
+                        📚 Không có sách nào có sẵn
+                    </div>
+                `;
+            } else {
+                container.innerHTML = books.map(book => createBookCard(book)).join('');
+            }
+            
+            container.style.display = 'grid';
+        }
+
+        // Tạo HTML cho từng cuốn sách
+        function createBookCard(book) {
+            
+            return `
+                <div class="book-item">
+                    <img src="${book.coverImage || 'default-cover.jpg'}" alt="Book Cover" class="book-cover">
+                    <h3 class="book-title">${book.title || 'Không có tiêu đề'}</h3>
+                    
+                    <div style="margin-bottom: 8px; font-size: 0.95em;">
+                        <span style="font-weight: 600; color: #457b9d;">📋 ID:</span> 
+                        ${book.bookId || 'N/A'}
+                    </div>
+                    
+                    <div style="margin-bottom: 8px; font-size: 0.95em;">
+                        <span style="font-weight: 600; color: #457b9d;">✍️ Tác giả:</span> 
+                        ${book.author || 'Không rõ'}
+                    </div>
+                    
+                    <div style="margin-bottom: 8px; font-size: 0.95em;">
+                        <span style="font-weight: 600; color: #457b9d;">🏢 NXB:</span> 
+                        ${book.publisher || 'Không rõ'}
+                    </div>
+                    
+                    <div style="margin-bottom: 8px; font-size: 0.95em;">
+                        <span style="font-weight: 600; color: #457b9d;">📅 Năm XB:</span> 
+                        ${book.yearPublished || 'Không rõ'}
+                    </div>
+                    
+                    <div style="margin-bottom: 8px; font-size: 0.95em;">
+                        <span style="font-weight: 600; color: #457b9d;">🏷️ Thể loại:</span> 
+                        ${genres}
+                    </div>
+                    
+                    <div style="margin-bottom: 8px; font-size: 0.95em;">
+                        <span style="font-weight: 600; color: #457b9d;">📊 Lượt mượn:</span> 
+                        ${book.borrowCount || 0} lần
+                    </div>
+                </div>
+            `;
+        }
+
+        function showLoading() {
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('booksContainer').style.display = 'none';
+        }
+
+        function showError(message) {
+            document.getElementById('loadingMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('booksContainer').style.display = 'none';
+        }
+
+        // Load books when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded, loading books...');
+            loadAvailableBooks();
+        });
+    </script>
+</body>
+</html>
