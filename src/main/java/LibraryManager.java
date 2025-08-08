@@ -74,6 +74,19 @@ public class LibraryManager {
         }
     }
 
+    // Getters for accessing data
+    public Map<String, User> getUsers() {
+        return users;
+    }
+
+    public Map<String, Book> getBooks() {
+        return books;
+    }
+
+    public List<Record> getRecords() {
+        return records;
+    }
+
     // --- Utility ---
     private String generateRecordId() {
         return "REC-" + UUID.randomUUID().toString().substring(0, 8);
