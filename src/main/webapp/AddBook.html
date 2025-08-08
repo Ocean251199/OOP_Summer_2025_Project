@@ -225,7 +225,7 @@
             <div class="addBook-screen">
                 <img src="addbook.png" alt="Add Book Icon">
                 <h1>Thêm Sách Mới</h1>
-                <form class="addBook-form" id="addBookForm">
+                <form class="addBook-form" id="addBookForm" enctype="application/x-www-form-urlencoded">
                     <div class="form-group">
                         <label for="title">Tiêu Đề</label>
                         <input type="text" id="title" name="title" required>
@@ -246,6 +246,10 @@
                         <label for="genres">Thể Loại (cách nhau bởi dấu phẩy)</label>
                         <input type="text" id="genres" name="genres" required placeholder="Ví dụ: Tiểu thuyết, Văn học">
                     </div>
+                    <div class="form-group">
+                        <label for="imgUrl">Ảnh</label>
+                        <input type="text" id="imgUrl" name="imgUrl" placeholder="URL ảnh">
+                    </div>
                     <button type="submit" class="addBook-button">Thêm Sách</button>
                 </form>
                 <div id="message" style="margin-top: 20px; padding: 10px; border-radius: 5px; display: none;"></div>
@@ -258,18 +262,34 @@
         document.getElementById('addBookForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const formData = new FormData(this);
+            // THAY FormData BẰNG URLSearchParams
+            const params = new URLSearchParams();
+            params.append('title', document.getElementById('title').value.trim());
+            params.append('author', document.getElementById('author').value.trim());
+            params.append('publisher', document.getElementById('publisher').value.trim());
+            params.append('yearPublished', document.getElementById('yearPublished').value.trim());
+            params.append('genres', document.getElementById('genres').value.trim());
+            params.append('imgUrl', document.getElementById('imgUrl').value.trim());
+            
+            console.log('=== DEBUG FRONTEND DATA ===');
+            for (let [key, value] of params.entries()) {
+                console.log(`${key}: '${value}'`);
+            }
+            console.log('============================');
+            
             const messageDiv = document.getElementById('message');
             const submitButton = document.querySelector('.addBook-button');
             
-            // Disable button during submission
             submitButton.disabled = true;
             submitButton.textContent = 'Đang thêm...';
             
             try {
-                const response = await fetch('/api/books/add', {
+                const response = await fetch('/btl/api/books/add', {
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
                 });
                 
                 const result = await response.json();
@@ -280,8 +300,6 @@
                     messageDiv.style.color = '#155724';
                     messageDiv.style.border = '1px solid #c3e6cb';
                     messageDiv.textContent = result.message;
-                    
-                    // Reset form
                     this.reset();
                 } else {
                     messageDiv.style.display = 'block';
@@ -297,10 +315,10 @@
                 messageDiv.style.border = '1px solid #f5c6cb';
                 messageDiv.textContent = 'Lỗi kết nối: ' + error.message;
             } finally {
-                // Re-enable button
                 submitButton.disabled = false;
                 submitButton.textContent = 'Thêm Sách';
             }
         });
     </script>
 </body>
+</html>

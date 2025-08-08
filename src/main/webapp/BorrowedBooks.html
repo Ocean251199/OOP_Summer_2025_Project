@@ -127,6 +127,14 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
         .book-title {
             font-size: 1.3em;
             font-weight: 700;
@@ -206,8 +214,7 @@
             <h1>Thư Mục</h1>
             <ul>
                 <li><a href="AddBook.html">Thêm Sách</a></li>
-                <li><a href="AvailableBooks.html">Sách Chưa Mượn</a></li>
-                <li><a href="BorrowedBooks.html">Sách Đã Mượn</a></li>
+                <li><a href="AvailableBooks.html">Sách Trong Kho</a></li>
                 <li><a href="Index.html">Trang Chủ</a></li>
             </ul>
         </div>
@@ -227,7 +234,9 @@
             const booksGrid = document.getElementById('books-grid');
 
             try {
-                const response = await fetch('/api/books?type=borrowed');
+                const response = await fetch('/btl/api/books?type=borrowed', {
+                    method: 'GET'
+                });
                 const result = await response.json();
 
                 loadingDiv.style.display = 'none';
@@ -239,8 +248,17 @@
                         booksGrid.innerHTML = '<div class="no-books">Không có sách nào đang được mượn</div>';
                     } else {
                         booksGrid.innerHTML = books.map(book => `
-                            <div class="book-card">
-                                <div class="book-title">${book.title}</div>
+                            <div class="book-card"
+                                data-book-id="${book.bookId}"
+                                data-title="${book.title}"
+                                data-author="${book.author}"
+                                data-publisher="${book.publisher}"
+                                data-year="${book.yearPublished}"
+                                data-genres='${JSON.stringify(book.genres)}'
+                                data-borrow-count="${book.borrowCount}">
+
+                                <div class="book-info"><strong></strong> <img src="${book.imgUrl}" alt="${book.imgUrl}" /></div>
+                                <div class="book-title"><strong>Tên sách:</strong> ${book.title}</div>
                                 <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
                                 <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
                                 <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
@@ -249,7 +267,7 @@
                                     ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
                                 </div>
                                 <div class="book-actions">
-                                    <button class="return-btn" onclick="returnBook('${book.bookId}')">Trả Sách</button>
+                                        <button class="return-btn" onclick="returnBook('${book.bookId}')">➖</button>
                                 </div>
                             </div>
                         `).join('');

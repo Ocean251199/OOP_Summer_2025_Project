@@ -21,21 +21,12 @@ public class LibraryService {
     private void initializeTestData() {
         // Add some test books
         Book book1 = new Book("B001", "Truyện Kiều", "Nguyễn Du", "NXB Văn học", 1820, 
-<<<<<<< HEAD
                              Arrays.asList("Cổ điển", "Thơ ca"), "https://www.nxbtre.com.vn/Images/Book/NXBTreStoryFull_03462015_104616.jpg");
         Book book2 = new Book("B002", "Số đỏ", "Vũ Trọng Phụng", "NXB Kim Đồng", 1936, 
                              Arrays.asList("Tiểu thuyết", "Hiện thực"), "https://product.hstatic.net/200000017360/product/bia_sodo3-b1_b32d805ef78846fab8d0d6c1c7fc887b_master.jpg");
         Book book3 = new Book("B003", "Tắt đèn", "Ngô Tất Tố", "NXB Văn học", 1939, 
                              Arrays.asList("Tiểu thuyết", "Hiện thực"), "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1479993956i/13147425.jpg");
 
-=======
-                             Arrays.asList("Cổ điển", "Thơ ca"));
-        Book book2 = new Book("B002", "Số đỏ", "Vũ Trọng Phụng", "NXB Kim Đồng", 1936, 
-                             Arrays.asList("Tiểu thuyết", "Hiện thực"));
-        Book book3 = new Book("B003", "Tắt đèn", "Ngô Tất Tố", "NXB Văn học", 1939, 
-                             Arrays.asList("Tiểu thuyết", "Hiện thực"));
-        
->>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
         libraryManager.addBook(book1);
         libraryManager.addBook(book2);
         libraryManager.addBook(book3);
@@ -66,7 +57,6 @@ public class LibraryService {
     }
 
     public boolean addBook(String title, String author, String publisher, int yearPublished, List<String> genres) {
-<<<<<<< HEAD
         String defaultImgUrl = "https://via.placeholder.com/150x200?text=No+Image";
         return addBook(title, author, publisher, yearPublished, genres, defaultImgUrl);
     }
@@ -75,11 +65,6 @@ public class LibraryService {
         try {
             String bookId = generateBookId();
             Book book = new Book(bookId, title, author, publisher, yearPublished, genres, imgUrl);
-=======
-        try {
-            String bookId = generateBookId();
-            Book book = new Book(bookId, title, author, publisher, yearPublished, genres);
->>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
             libraryManager.addBook(book);
             return true;
         } catch (Exception e) {
@@ -120,12 +105,8 @@ public class LibraryService {
                 book.getYearPublished(),
                 book.getGenres(),
                 book.getBorrowCount(),
-<<<<<<< HEAD
                 isBookAvailable(book.getBookId()),
                 book.getImgUrl()
-=======
-                isBookAvailable(book.getBookId())
->>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
         );
     }
 

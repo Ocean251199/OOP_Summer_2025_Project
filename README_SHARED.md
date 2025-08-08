@@ -40,7 +40,8 @@
 test-build.bat
 
 # Hoặc manual:
-mvn clean compile jetty:run
+mvn clean compile
+mvn jetty:run
 ```
 
 ## 🎨 Want to Hack?
