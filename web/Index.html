@@ -165,7 +165,7 @@
     <div class="feature-item" onclick="goToAvailableBookScreen()">
         <img src="sachchuamuon.png" alt="Sách trong kho">
         <div class="feature-title">Sách chưa mượn</div>
-        <div class="feature-desc">Những cuốn sách còn trong kho, chưa ai mượn</div>
+        <div class="feature-desc">Những cuốn sách vẫn còn nằm trong kho</div>
     </div>
     <div class="feature-item" onclick="goToBorrowedBookScreen()">
         <img src="sachdamuon.png" alt="Sách đã mượn">
@@ -179,23 +179,23 @@
     </div>
     <script>
         function goToAvailableBookScreen() {
-            /**document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
+            document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
             document.querySelector('.welcome-screen').style.opacity = '0';
             
             setTimeout(() => {
                 window.location.href = "AvailableBooks.html";
-            }, 500);*/
-            alert("Chức năng này hiện chưa được triển khai.");
+            }, 500);
+            
             
         }
 
         function goToBorrowedBookScreen() {
-            /**document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
+            document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
             document.querySelector('.welcome-screen').style.opacity = '0';
 
             setTimeout(() => {
                 window.location.href = "BorrowedBooks.html";
-            }, 500);*/
+            }, 500);
             alert("Chức năng này hiện chưa được triển khai.");
         }
 
