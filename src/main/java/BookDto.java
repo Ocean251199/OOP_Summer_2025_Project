@@ -9,14 +9,21 @@ public class BookDto {
     private List<String> genres;
     private int borrowCount;
     private boolean isAvailable;
+<<<<<<< HEAD
     private String imgUrl;
+=======
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
 
     // Constructors
     public BookDto() {}
 
     public BookDto(String bookId, String title, String author, String publisher, 
+<<<<<<< HEAD
                    int yearPublished, List<String> genres, int borrowCount, 
                    boolean isAvailable, String imgUrl) {
+=======
+                   int yearPublished, List<String> genres, int borrowCount, boolean isAvailable) {
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -25,7 +32,10 @@ public class BookDto {
         this.genres = genres;
         this.borrowCount = borrowCount;
         this.isAvailable = isAvailable;
+<<<<<<< HEAD
         this.imgUrl = imgUrl;
+=======
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
     }
 
     // Getters and Setters
@@ -92,6 +102,7 @@ public class BookDto {
     public void setAvailable(boolean available) {
         isAvailable = available;
     }
+<<<<<<< HEAD
 
     public String getImgUrl() {
         return imgUrl;
@@ -100,4 +111,6 @@ public class BookDto {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+=======
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
 }

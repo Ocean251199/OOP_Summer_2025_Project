@@ -38,7 +38,10 @@ public class AddBookServlet extends HttpServlet {
             String publisher = request.getParameter("publisher");
             String yearPublishedStr = request.getParameter("yearPublished");
             String genresStr = request.getParameter("genres");
+<<<<<<< HEAD
             String imgUrl = request.getParameter("imgUrl"); 
+=======
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
 
             // Validate input
             if (title == null || title.trim().isEmpty() ||
@@ -46,7 +49,11 @@ public class AddBookServlet extends HttpServlet {
                 publisher == null || publisher.trim().isEmpty() ||
                 yearPublishedStr == null || yearPublishedStr.trim().isEmpty() ||
                 genresStr == null || genresStr.trim().isEmpty()) {
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
                 ApiResponse<Object> errorResponse = ApiResponse.error("Tất cả các trường đều bắt buộc");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
@@ -69,6 +76,7 @@ public class AddBookServlet extends HttpServlet {
             for (int i = 0; i < genreArray.length; i++) {
                 genreArray[i] = genreArray[i].trim();
             }
+<<<<<<< HEAD
             
             if (imgUrl == null || imgUrl.trim().isEmpty()) {
                 imgUrl = "https://via.placeholder.com/150x200?text=No+Image";
@@ -76,6 +84,11 @@ public class AddBookServlet extends HttpServlet {
 
             // Add book using service
             boolean success = libraryService.addBook(title, author, publisher, yearPublished, Arrays.asList(genreArray), imgUrl);
+=======
+
+            // Add book using service
+            boolean success = libraryService.addBook(title, author, publisher, yearPublished, Arrays.asList(genreArray));
+>>>>>>> 55e6436a5a282ac3ad80809b1ba72066886e3305
             
             if (success) {
                 ApiResponse<Object> successResponse = ApiResponse.success("Thêm sách thành công", null);
