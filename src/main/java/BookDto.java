@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Book {
+public class BookDto {
     private String bookId;
     private String title;
     private String author;
@@ -8,20 +8,25 @@ public class Book {
     private int yearPublished;
     private List<String> genres;
     private int borrowCount;
+    private boolean isAvailable;
     private String imgUrl;
 
-    // Constructor
-    public Book(String bookId, String title, String author, String publisher, int yearPublished, List<String> genres, String imgUrl) {
+    // Constructors
+    public BookDto() {}
+
+    public BookDto(String bookId, String title, String author, String publisher, 
+                   int yearPublished, List<String> genres, int borrowCount, 
+                   boolean isAvailable, String imgUrl) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.yearPublished = yearPublished;
         this.genres = genres;
-        this.borrowCount = 0; // start at 0
+        this.borrowCount = borrowCount;
+        this.isAvailable = isAvailable;
         this.imgUrl = imgUrl;
     }
-
 
     // Getters and Setters
     public String getBookId() {
@@ -76,8 +81,16 @@ public class Book {
         return borrowCount;
     }
 
-    public void incrementBorrowCount() {
-        this.borrowCount++;
+    public void setBorrowCount(int borrowCount) {
+        this.borrowCount = borrowCount;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 
     public String getImgUrl() {
@@ -87,21 +100,4 @@ public class Book {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
-
-    
-    // Optional: toString for debugging
-    @Override
-    public String toString() {
-        return "Book{" +
-                "bookId='" + bookId + '\'' +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", yearPublished=" + yearPublished +
-                ", genres=" + genres +
-                ", borrowCount=" + borrowCount +
-                '}';
-    }
-
-    
 }

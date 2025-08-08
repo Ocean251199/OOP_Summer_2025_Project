@@ -8,7 +8,8 @@ public class LibTest {
             "F. Scott Fitzgerald",
             "Scribner",
             1925,
-            Arrays.asList("Classic", "Fiction")
+            Arrays.asList("Classic", "Fiction"),
+            "https://example.com/great_gatsby.jpg"
         );
 
         System.out.println(book); // Print initial state
@@ -16,7 +17,7 @@ public class LibTest {
         book.incrementBorrowCount();
         book.incrementBorrowCount();
 
-        System.out.println("After borrowing twice:");
+        System.out.println("After borrowing twice: - LibTest.java:20");
         System.out.println(book);
     }
 }
