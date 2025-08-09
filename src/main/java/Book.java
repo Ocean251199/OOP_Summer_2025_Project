@@ -8,9 +8,10 @@ public class Book {
     private int yearPublished;
     private List<String> genres;
     private int borrowCount;
+    private String imgUrl;
 
     // Constructor
-    public Book(String bookId, String title, String author, String publisher, int yearPublished, List<String> genres) {
+    public Book(String bookId, String title, String author, String publisher, int yearPublished, List<String> genres, String imgUrl) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -18,7 +19,9 @@ public class Book {
         this.yearPublished = yearPublished;
         this.genres = genres;
         this.borrowCount = 0; // start at 0
+        this.imgUrl = imgUrl;
     }
+
 
     // Getters and Setters
     public String getBookId() {
@@ -77,6 +80,15 @@ public class Book {
         this.borrowCount++;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    
     // Optional: toString for debugging
     @Override
     public String toString() {
@@ -90,4 +102,6 @@ public class Book {
                 ", borrowCount=" + borrowCount +
                 '}';
     }
+
+    
 }

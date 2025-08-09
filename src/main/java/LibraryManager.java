@@ -19,6 +19,7 @@ public class LibraryManager {
     public void addBook(Book book) {
         books.put(book.getBookId(), book);
     }
+    
 
     // Handle borrowing a book
     public void borrowBook(String userId, String bookId) {
@@ -26,12 +27,12 @@ public class LibraryManager {
         Book book = books.get(bookId);
 
         if (user == null || book == null) {
-            System.out.println("User or Book not found.");
+            System.out.println("User or Book not found. - LibraryManager.java:30");
             return;
         }
 
         if (user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User already borrowed this book.");
+            System.out.println("User already borrowed this book. - LibraryManager.java:35");
             return;
         }
 
@@ -41,7 +42,7 @@ public class LibraryManager {
         Record record = new Record(generateRecordId(), userId, bookId, ActionType.BORROW);
         records.add(record);
 
-        System.out.println("Borrow successful: " + record);
+        System.out.println("Borrow successful: - LibraryManager.java:45" + record);
     }
 
     // Handle returning a book
@@ -50,12 +51,12 @@ public class LibraryManager {
         Book book = books.get(bookId);
 
         if (user == null || book == null) {
-            System.out.println("User or Book not found.");
+            System.out.println("User or Book not found. - LibraryManager.java:54");
             return;
         }
 
         if (!user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User hasn't borrowed this book.");
+            System.out.println("User hasn't borrowed this book. - LibraryManager.java:59");
             return;
         }
 
@@ -64,7 +65,7 @@ public class LibraryManager {
         Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
         records.add(record);
 
-        System.out.println("Return successful: " + record);
+        System.out.println("Return successful: - LibraryManager.java:68" + record);
     }
 
     // View logs
@@ -72,6 +73,19 @@ public class LibraryManager {
         for (Record r : records) {
             System.out.println(r);
         }
+    }
+
+    // Getters for accessing data
+    public Map<String, User> getUsers() {
+        return users;
+    }
+
+    public Map<String, Book> getBooks() {
+        return books;
+    }
+
+    public List<Record> getRecords() {
+        return records;
     }
 
     // --- Utility ---
