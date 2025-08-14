@@ -162,13 +162,14 @@
         .books-container {
             max-width: 1200px;
             margin: 0 auto;
+            margin-top: 30px;
         }
 
         .books-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .book-card {
@@ -288,12 +289,6 @@
                 </div>
             </div>
         </div>
-        <div class="books-container">
-            <div id="search-results-info" class="search-results-info" style="display: none;"></div>
-            <div id="loading" class="loading">Đang tải...</div>
-            <div id="error" class="error" style="display: none;"></div>
-            <div id="books-grid" class="books-grid" style="display: none;"></div>
-        </div>
     </div>
     <div class="main-content">
         <div class="directory">
@@ -344,6 +339,7 @@
                                 data-borrow-count="${book.borrowCount}">
 
                                 <div class="book-info"><strong></strong> <img src="${book.imgUrl}" alt="${book.imgUrl}" /></div>
+                                <div class="book-info"><strong>Id:</strong>${book.bookId}</div>
                                 <div class="book-title"><strong>Tên sách:</strong> ${book.title}</div>
                                 <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
                                 <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
@@ -379,15 +375,32 @@
         }
 
         async function borrowBook(bookId) {
+            console.log('=== BORROW DEBUG ===');
+            console.log('Current URL:', window.location.href);
+            console.log('BookId:', bookId);
             const button = event.target;
             const bookData = getBookDataFromCard(button);
 
             console.log('Dữ liệu sách:', bookData);
             try {
                 const formData = new FormData();
-                formData.append('userId', 'default');
+                formData.append('userId', 'U001');
                 formData.append('bookId', bookId);
                 
+                console.log('FormData entries:');
+                let hasEntries = false;
+                for (let [key, value] of formData.entries()) {
+                    console.log('  ' + key + ':', value);
+                    hasEntries = true;
+                }
+                
+                if (!hasEntries) {
+                    console.error('FormData is empty!');
+                    alert('❌ Lỗi: FormData trống');
+                    return;
+                }
+                
+                console.log('Sending request to /btl/api/books/borrow');
                 const response = await fetch('/btl/api/books/borrow', {
                     method: 'POST',
                     body: formData  

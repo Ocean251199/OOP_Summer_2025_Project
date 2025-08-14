@@ -44,11 +44,19 @@ public class BorrowBookServlet extends HttpServlet {
                 return;
             }
 
+            if (userId == null || userId.trim().isEmpty()) {
+                System.out.println("User ID không được để trống. - BorrowBookServlet.java:48");
+            }
+
+            if (bookId == null || bookId.trim().isEmpty()) {
+                System.out.println("Book ID không được để trống. - BorrowBookServlet.java:52");
+            }
             // Use default test user if not provided
             if ("default".equals(userId.trim())) {
                 userId = "U001";
             }
 
+            
             boolean success = libraryService.borrowBook(userId, bookId);
             
             if (success) {
