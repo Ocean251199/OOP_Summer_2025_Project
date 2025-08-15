@@ -1,17 +1,19 @@
 import java.util.*;
 
+// Quản lý thư viện
 public class LibraryManager {
     private Map<String, User> users;
     private Map<String, Book> books;
     private List<Record> records;
 
+    // Khởi tạo
     public LibraryManager() {
         this.users = new HashMap<>();
         this.books = new HashMap<>();
         this.records = new ArrayList<>();
     }
 
-    // Add user or book to system
+    // Thêm người dùng hoặc sách vào hệ thống
     public void registerUser(User user) {
         users.put(user.getUserId(), user);
     }
@@ -21,7 +23,7 @@ public class LibraryManager {
     }
     
 
-    // Handle borrowing a book
+    // Xử lý mượn sách
     public boolean borrowBook(String userId, String bookId) {
         User user = users.get(userId);
         Book book = books.get(bookId);
@@ -59,7 +61,7 @@ public class LibraryManager {
         return true; // Thành công
     }
 
-    // Handle returning a book
+    // Xử lý hoàn trả sách
     public boolean returnBook(String userId, String bookId) {
         User user = users.get(userId);
         Book book = books.get(bookId);
@@ -90,7 +92,7 @@ public class LibraryManager {
         return true; // Thành công
     }
 
-    // View logs
+    // Xem nhật ký
     public void printAllRecords() {
         for (Record r : records) {
             System.out.println(r);

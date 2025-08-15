@@ -13,12 +13,22 @@ public class AddBookServlet extends HttpServlet {
     private LibraryService libraryService;
     private ObjectMapper objectMapper;
 
+    /**
+     * Khởi tạo servlet và phiên bản dịch vụ thư viện.
+     */
     @Override
     public void init() throws ServletException {
         libraryService = LibraryService.getInstance();
         objectMapper = new ObjectMapper();
     }
 
+    /**
+     * Xử lý yêu cầu POST để thêm sách mới.
+     * @param request HttpServletRequest chứa thông tin yêu cầu.
+     * @param response HttpServletResponse để gửi phản hồi.
+     * @throws ServletException nếu có lỗi trong quá trình xử lý servlet.
+     * @throws IOException nếu có lỗi trong quá trình đọc/ghi dữ liệu.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -29,7 +39,7 @@ public class AddBookServlet extends HttpServlet {
         System.out.println("ContentType: - AddBookServlet.java:29" + request.getContentType());
         System.out.println("ContentLength: - AddBookServlet.java:30" + request.getContentLength());
         
-        // Print all parameter names
+        // In ra tất cả parameter
         System.out.println("Parameter names received: - AddBookServlet.java:33");
         java.util.Enumeration<String> paramNames = request.getParameterNames();
         while (paramNames.hasMoreElements()) {
@@ -47,7 +57,7 @@ public class AddBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            // Get parameters from request
+            // Lấy parameters từ request
             String title = request.getParameter("title");
             String author = request.getParameter("author");
             String publisher = request.getParameter("publisher");
@@ -65,7 +75,7 @@ public class AddBookServlet extends HttpServlet {
             System.out.println("==================== - AddBookServlet.java:65");
 
 
-            // Validate input
+            // Kiểm tra input thiếu và không đền, bắt buộc điền tất cả input (trừ URL hình ảnh)
             if (title == null || title.trim().isEmpty() ||
                 author == null || author.trim().isEmpty() ||
                 publisher == null || publisher.trim().isEmpty() ||
@@ -85,7 +95,7 @@ public class AddBookServlet extends HttpServlet {
                 return;
             }
 
-            // Set default image if empty
+            // Ảnh gốc thêm vào nếu không có ảnh
             if (imgUrl == null || imgUrl.trim().isEmpty()) {
                 imgUrl = "https://plpsoft.vn/ckfinder/connector?command=Proxy&lang=vi&type=Files&currentFolder=%2FBaivietIT%2FJava%2F&hash=c245c263ce0eced480effe66bbede6b4d46c15ae&fileName=Plpsoft-Java.jpg";
             }
@@ -107,7 +117,7 @@ public class AddBookServlet extends HttpServlet {
                 genreArray[i] = genreArray[i].trim();
             }
 
-            // Add book using service
+            // Thêm sách vào kho
             boolean success = libraryService.addBook(title, author, publisher, yearPublished, Arrays.asList(genreArray), imgUrl);
             
             if (success) {

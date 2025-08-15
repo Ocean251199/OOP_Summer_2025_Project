@@ -1,5 +1,6 @@
 import java.util.List;
 
+// Đại diện cho thông tin sách được truyền qua API
 public class BookDto {
     private String bookId;
     private String title;
@@ -11,7 +12,7 @@ public class BookDto {
     private boolean isAvailable;
     private String imgUrl;
 
-    // Constructors
+    // Khởi tạo
     public BookDto() {}
 
     public BookDto(String bookId, String title, String author, String publisher, 

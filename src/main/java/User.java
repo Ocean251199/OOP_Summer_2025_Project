@@ -1,13 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
+// Lớp đại diện cho người dùng trong hệ thống
 public class User {
     private String userId;
     private String email;
     private String password;
     private List<String> borrowedBookIds;
 
-    // Constructor
+    // Khởi tạo
     public User(String userId, String email, String password) {
         this.userId = userId;
         this.email = email;
@@ -53,7 +54,7 @@ public class User {
         borrowedBookIds.remove(bookId);
     }
 
-    // Optional toString
+    // Phương thức chuyển đổi đối tượng thành chuỗi
     @Override
     public String toString() {
         return "User{" +

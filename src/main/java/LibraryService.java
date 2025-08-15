@@ -1,10 +1,12 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
+// Dịch vụ thư viện
 public class LibraryService {
     private LibraryManager libraryManager;
     private static LibraryService instance;
 
+    // Khởi tạo
     private LibraryService() {
         this.libraryManager = new LibraryManager();
         initializeTestData();
@@ -17,10 +19,10 @@ public class LibraryService {
         return instance;
     }
 
-    // Initialize with some test data
+    // Khởi tạo với một số dữ liệu thử nghiệm
     private void initializeTestData() {
-        // Add some test books
-        Book book1 = new Book("B001", "Truyện Kiều", "Nguyễn Du", "NXB Văn học", 1820, 
+        // Thêm một số sách thử nghiệm
+        Book book1 = new Book("B001", "Truyện Kiều", "Nguyễn Du", "NXB Văn học", 1820,
                              Arrays.asList("Cổ điển", "Thơ ca"), "https://www.nxbtre.com.vn/Images/Book/NXBTreStoryFull_03462015_104616.jpg");
         Book book2 = new Book("B002", "Số đỏ", "Vũ Trọng Phụng", "NXB Kim Đồng", 1936, 
                              Arrays.asList("Tiểu thuyết", "Hiện thực"), "https://product.hstatic.net/200000017360/product/bia_sodo3-b1_b32d805ef78846fab8d0d6c1c7fc887b_master.jpg");
@@ -31,17 +33,19 @@ public class LibraryService {
         libraryManager.addBook(book2);
         libraryManager.addBook(book3);
 
-        // Add test user
+        // Thêm người dùng thử nghiệm
         User testUser = new User("U001", "test@example.com", "password");
         libraryManager.registerUser(testUser);
     }
 
+    // Lấy danh sách tất cả sách
     public List<BookDto> getAllBooks() {
         return libraryManager.getBooks().values().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
+    // Lấy danh sách sách trong kho
     public List<BookDto> getAvailableBooks() {
         return libraryManager.getBooks().values().stream()
                 .filter(book -> isBookAvailable(book.getBookId()))
@@ -49,6 +53,7 @@ public class LibraryService {
                 .collect(Collectors.toList());
     }
 
+    // Lấy danh sách sách đã mượn
     public List<BookDto> getBorrowedBooks() {
         return libraryManager.getBooks().values().stream()
                 .filter(book -> !isBookAvailable(book.getBookId()))
@@ -56,11 +61,13 @@ public class LibraryService {
                 .collect(Collectors.toList());
     }
 
+    // Thêm sách mới không ảnh
     public boolean addBook(String title, String author, String publisher, int yearPublished, List<String> genres) {
         String defaultImgUrl = "https://gemini.google.com/app/74d50a86f5e0c098";
         return addBook(title, author, publisher, yearPublished, genres, defaultImgUrl);
     }
 
+    // Thêm sách mới
     public boolean addBook(String title, String author, String publisher, int yearPublished, List<String> genres, String imgUrl) {
         try {
             String bookId = generateBookId();
@@ -73,8 +80,8 @@ public class LibraryService {
         }
     }
 
-
-     public boolean borrowBook(String userId, String bookId) {
+    // Mượn sách
+    public boolean borrowBook(String userId, String bookId) {
         try {
             System.out.println("DEBUG: Calling LibraryManager.borrowBook()... - LibraryService.java:79"); 
             libraryManager.borrowBook(userId, bookId);
@@ -86,6 +93,7 @@ public class LibraryService {
         }
     }
 
+    // Trả sách
     public boolean returnBook(String userId, String bookId) {
         try {
             System.out.println("DEBUG: Calling LibraryManager.returnBook()... - LibraryService.java:91");
@@ -98,8 +106,9 @@ public class LibraryService {
         }
     }
 
+    // Kiểm tra sách có không
     private boolean isBookAvailable(String bookId) {
-        // Check if any user has borrowed this book
+        // Kiểm tra xem có người dùng nào đã mượn sách này không
         return libraryManager.getUsers().values().stream()
                 .noneMatch(user -> user.getBorrowedBookIds().contains(bookId));
     }

@@ -8,17 +8,20 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+// Servlet để xử lý yêu cầu trả sách
 @WebServlet("/api/books/return")
 public class ReturnBookServlet extends HttpServlet {
     private LibraryService libraryService;
     private ObjectMapper objectMapper;
 
+    // Khởi tạo
     @Override
     public void init() throws ServletException {
         libraryService = LibraryService.getInstance();
         objectMapper = new ObjectMapper();
     }
 
+    // Xử lý yêu cầu trả sách
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -31,13 +34,14 @@ public class ReturnBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+        // Xử lý yêu cầu
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
             String userId = requestBody.get("userId");
             String bookId = requestBody.get("bookId");
             System.out.println("DEBUG: Servlet nhận được  userId: ' - ReturnBookServlet.java:39" + userId + "', bookId: '" + bookId + "'");
-            // Validate input
+            // Kiểm tra input
             if (userId == null || userId.trim().isEmpty() ||
                 bookId == null || bookId.trim().isEmpty()) {
                 
@@ -47,11 +51,12 @@ public class ReturnBookServlet extends HttpServlet {
                 return;
             }
 
-            // Use default test user if not provided
+            // Dùng default test user nếu không được cung cấp
             if ("default".equals(userId.trim())) {
                 userId = "U001";
             }
 
+            // Trả sách thành công - thất bại
             boolean success = libraryService.returnBook(userId, bookId);
             
             if (success) {
@@ -71,6 +76,7 @@ public class ReturnBookServlet extends HttpServlet {
         }
     }
 
+    // Xử lý yêu cầu OPTIONS để hỗ trợ CORS
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {

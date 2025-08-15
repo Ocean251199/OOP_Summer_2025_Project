@@ -1,5 +1,6 @@
 import java.time.LocalDateTime;
 
+// Lớp đại diện cho một bản ghi mượn/trả sách
 public class Record {
     private String recordId;
     private LocalDateTime timestamp;
@@ -7,10 +8,10 @@ public class Record {
     private String bookId;
     private ActionType action;
 
-    // Constructor
+    // Khởi tạo
     public Record(String recordId, String userId, String bookId, ActionType action) {
         this.recordId = recordId;
-        this.timestamp = LocalDateTime.now();  // record when it happens
+        this.timestamp = LocalDateTime.now();  // Thời gian xảy ra
         this.userId = userId;
         this.bookId = bookId;
         this.action = action;
