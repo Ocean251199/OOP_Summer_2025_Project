@@ -1,94 +1,78 @@
-import java.util.*;
-
 public class LibraryManager {
-    private Map<String, User> users;
-    private Map<String, Book> books;
-    private List<Record> records;
+    private UserDAO userDAO;
+    private BookDAO bookDAO;
+    private RecordDAO recordDAO;
 
-    public LibraryManager() {
-        this.users = new HashMap<>();
-        this.books = new HashMap<>();
-        this.records = new ArrayList<>();
+    public LibraryManager(UserDAO userDAO, BookDAO bookDAO, RecordDAO recordDAO) {
+        this.userDAO = userDAO;
+        this.bookDAO = bookDAO;
+        this.recordDAO = recordDAO;
     }
 
-    // Add user or book to system
     public void registerUser(User user) {
-        users.put(user.getUserId(), user);
+        userDAO.addUser(user);
     }
 
     public void addBook(Book book) {
-        books.put(book.getBookId(), book);
+        bookDAO.addBook(book);
     }
-    
 
-    // Handle borrowing a book
     public void borrowBook(String userId, String bookId) {
-        User user = users.get(userId);
-        Book book = books.get(bookId);
+        User user = userDAO.getUserById(userId);
+        Book book = bookDAO.getBookById(bookId);
 
         if (user == null || book == null) {
-            System.out.println("User or Book not found. - LibraryManager.java:30");
+            System.out.println("User or Book not found.");
             return;
         }
 
         if (user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User already borrowed this book. - LibraryManager.java:35");
+            System.out.println("Already borrowed.");
             return;
         }
 
         user.getBorrowedBookIds().add(bookId);
         book.incrementBorrowCount();
 
-        Record record = new Record(generateRecordId(), userId, bookId, ActionType.BORROW);
-        records.add(record);
+        userDAO.updateUser(user);
+        bookDAO.updateBook(book);
 
-        System.out.println("Borrow successful: - LibraryManager.java:45" + record);
+        Record record = new Record(generateRecordId(), userId, bookId, ActionType.BORROW);
+        recordDAO.addRecord(record);
+
+        System.out.println("Borrow successful: " + record);
     }
 
-    // Handle returning a book
     public void returnBook(String userId, String bookId) {
-        User user = users.get(userId);
-        Book book = books.get(bookId);
+        User user = userDAO.getUserById(userId);
+        Book book = bookDAO.getBookById(bookId);
 
         if (user == null || book == null) {
-            System.out.println("User or Book not found. - LibraryManager.java:54");
+            System.out.println("User or Book not found.");
             return;
         }
 
         if (!user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User hasn't borrowed this book. - LibraryManager.java:59");
+            System.out.println("Not borrowed.");
             return;
         }
 
         user.getBorrowedBookIds().remove(bookId);
 
-        Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
-        records.add(record);
+        userDAO.updateUser(user);
 
-        System.out.println("Return successful: - LibraryManager.java:68" + record);
+        Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
+        recordDAO.addRecord(record);
+
+        System.out.println("Return successful: " + record);
     }
 
-    // View logs
     public void printAllRecords() {
-        for (Record r : records) {
+        for (Record r : recordDAO.getAllRecords()) {
             System.out.println(r);
         }
     }
 
-    // Getters for accessing data
-    public Map<String, User> getUsers() {
-        return users;
-    }
-
-    public Map<String, Book> getBooks() {
-        return books;
-    }
-
-    public List<Record> getRecords() {
-        return records;
-    }
-
-    // --- Utility ---
     private String generateRecordId() {
         return "REC-" + UUID.randomUUID().toString().substring(0, 8);
     }

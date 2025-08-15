@@ -1,0 +1,43 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Library Management System</display-name>
+
+  <!-- Welcome file -->
+  <welcome-file-list>
+    <welcome-file>Index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- Khai báo servlet lấy danh sách sách -->
+  <servlet>
+    <servlet-name>BooksServlet</servlet-name>
+    <servlet-class>BooksServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BooksServlet</servlet-name>
+    <url-pattern>/api/books</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Khai báo servlet mượn sách -->
+  <servlet>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-class>BorrowBookServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <url-pattern>/api/books/borrow</url-pattern>
+  </servlet-mapping>
+
+  <!-- Khai báo servlet thêm sách -->
+  <servlet>
+    <servlet-name>AddBookServlet</servlet-name>
+    <servlet-class>AddBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddBookServlet</servlet-name>
+    <url-pattern>/api/books/add</url-pattern>
+  </servlet-mapping>
+</web-app>

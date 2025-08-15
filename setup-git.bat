@@ -4,7 +4,7 @@ echo    Upload to GitHub - Quick Setup
 echo ============================================
 echo.
 
-cd /d "c:\Users\noina\Downloads\OOP_Summer_2025_Project-main (2)\OOP_Summer_2025_Project-main"
+cd /d "D:\CNTT_Shared\OOP\OOP_Summer_2025_Project"
 
 echo Current directory: %cd%
 echo.

@@ -8,7 +8,7 @@ echo.
 echo 1. Mở Command Prompt/PowerShell
 echo 2. Chạy lệnh sau:
 echo.
-echo    cd "c:\Users\noina\Downloads\OOP_Summer_2025_Project-main (2)\OOP_Summer_2025_Project-main"
+echo    cd "D:\CNTT_Shared\OOP\OOP_Summer_2025_Project"
 echo    mvn clean compile jetty:run
 echo.
 echo 3. Truy cập: http://localhost:8080/btl/
@@ -21,7 +21,7 @@ set /p choice=
 if /i "%choice%"=="y" (
     echo.
     echo Đang chạy...
-    cd /d "c:\Users\noina\Downloads\OOP_Summer_2025_Project-main (2)\OOP_Summer_2025_Project-main"
+    cd /d "D:\CNTT_Shared\OOP\OOP_Summer_2025_Project"
     mvn clean compile jetty:run
 ) else (
     echo.
