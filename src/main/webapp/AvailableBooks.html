@@ -349,7 +349,8 @@
                                     ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
                                 </div>
                                 <div class="book-actions">
-                                        <button class="borrow-btn" onclick="borrowBook('${book.bookId}')">➕</button>
+                                        <button class="borrow-btn" onclick="borrowBook(event, '${book.bookId}')">➕</button>
+                                        
                                 </div>
                             </div>
                         `).join('');
@@ -374,43 +375,29 @@
             };
         }
 
-        async function borrowBook(bookId) {
+        async function borrowBook(event, bookId) {
             console.log('=== BORROW DEBUG ===');
-            console.log('Current URL:', window.location.href);
             console.log('BookId:', bookId);
-            const button = event.target;
-            const bookData = getBookDataFromCard(button);
 
-            console.log('Dữ liệu sách:', bookData);
+            const button = event.target;
+            button.disabled = true; 
+            button.textContent = '...'; 
+
             try {
-                const formData = new FormData();
-                formData.append('userId', 'U001');
-                formData.append('bookId', bookId);
-                
-                console.log('FormData entries:');
-                let hasEntries = false;
-                for (let [key, value] of formData.entries()) {
-                    console.log('  ' + key + ':', value);
-                    hasEntries = true;
-                }
-                
-                if (!hasEntries) {
-                    console.error('FormData is empty!');
-                    alert('❌ Lỗi: FormData trống');
-                    return;
-                }
-                
-                console.log('Sending request to /btl/api/books/borrow');
+                const data = {
+                    userId: 'U001',
+                    bookId: bookId
+                };
                 const response = await fetch('/btl/api/books/borrow', {
                     method: 'POST',
-                    body: formData  
+                    body:  JSON.stringify(data)
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
                     alert('✅ ' + result.message);
-                    loadAvailableBooks();
+                    loadAvailableBooks(); 
                 } else {
                     alert('❌ ' + result.message);
                 }

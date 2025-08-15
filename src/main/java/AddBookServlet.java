@@ -87,7 +87,7 @@ public class AddBookServlet extends HttpServlet {
 
             // Set default image if empty
             if (imgUrl == null || imgUrl.trim().isEmpty()) {
-                imgUrl = "https://via.placeholder.com/150x200?text=No+Image";
+                imgUrl = "https://gemini.google.com/app/74d50a86f5e0c098";
             }
 
             // Parse year
