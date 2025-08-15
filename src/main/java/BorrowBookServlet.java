@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,7 +22,8 @@ public class BorrowBookServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        
+                System.out.println("DEBUG: Entering BorrowBookServlet.doPost() - BorrowBookServlet.java:25");
+
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         
@@ -31,12 +33,17 @@ public class BorrowBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            String userId = request.getParameter("userId");
-            String bookId = request.getParameter("bookId");
-
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
+            String userId = requestBody.get("userId");
+            String bookId = requestBody.get("bookId");
+    
+            System.out.println("DEBUG: Servlet nhận được  userId: ' - BorrowBookServlet.java:41" + userId + "', bookId: '" + bookId + "'");
             // Validate input
             if (userId == null || userId.trim().isEmpty() ||
                 bookId == null || bookId.trim().isEmpty()) {
+
+                    
                 
                 ApiResponse<Object> errorResponse = ApiResponse.error("User ID và Book ID là bắt buộc");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -44,11 +51,19 @@ public class BorrowBookServlet extends HttpServlet {
                 return;
             }
 
+            if (userId == null || userId.trim().isEmpty()) {
+                System.out.println("User ID không được để trống. - BorrowBookServlet.java:55");
+            }
+
+            if (bookId == null || bookId.trim().isEmpty()) {
+                System.out.println("Book ID không được để trống. - BorrowBookServlet.java:59");
+            }
             // Use default test user if not provided
             if ("default".equals(userId.trim())) {
                 userId = "U001";
             }
 
+            
             boolean success = libraryService.borrowBook(userId, bookId);
             
             if (success) {

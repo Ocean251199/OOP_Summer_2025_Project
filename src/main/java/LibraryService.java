@@ -57,7 +57,7 @@ public class LibraryService {
     }
 
     public boolean addBook(String title, String author, String publisher, int yearPublished, List<String> genres) {
-        String defaultImgUrl = "https://via.placeholder.com/150x200?text=No+Image";
+        String defaultImgUrl = "https://gemini.google.com/app/74d50a86f5e0c098";
         return addBook(title, author, publisher, yearPublished, genres, defaultImgUrl);
     }
 
@@ -68,24 +68,32 @@ public class LibraryService {
             libraryManager.addBook(book);
             return true;
         } catch (Exception e) {
+            
             return false;
         }
     }
 
-    public boolean borrowBook(String userId, String bookId) {
+
+     public boolean borrowBook(String userId, String bookId) {
         try {
+            System.out.println("DEBUG: Calling LibraryManager.borrowBook()... - LibraryService.java:79"); 
             libraryManager.borrowBook(userId, bookId);
             return true;
         } catch (Exception e) {
+            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:83" + e.getMessage()); 
+            e.printStackTrace();
             return false;
         }
     }
 
     public boolean returnBook(String userId, String bookId) {
         try {
+            System.out.println("DEBUG: Calling LibraryManager.returnBook()... - LibraryService.java:91");
             libraryManager.returnBook(userId, bookId);
             return true;
         } catch (Exception e) {
+            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:95" + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }

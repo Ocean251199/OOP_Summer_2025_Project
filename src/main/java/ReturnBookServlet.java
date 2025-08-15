@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,9 +32,11 @@ public class ReturnBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            String userId = request.getParameter("userId");
-            String bookId = request.getParameter("bookId");
-
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
+            String userId = requestBody.get("userId");
+            String bookId = requestBody.get("bookId");
+            System.out.println("DEBUG: Servlet nhận được  userId: ' - ReturnBookServlet.java:39" + userId + "', bookId: '" + bookId + "'");
             // Validate input
             if (userId == null || userId.trim().isEmpty() ||
                 bookId == null || bookId.trim().isEmpty()) {

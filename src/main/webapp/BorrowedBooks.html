@@ -30,19 +30,76 @@
             flex-direction: column;
             align-items: center;
         }
+
         .header h1 {
             font-size: 2em;
             margin: 0;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-        .header h2 {
+        
+        .header-bottom {
+            display: flex;
+            flex-direction: row;
+            gap: 500px;
+            margin-left: 250px;
+            margin-top: -60px;
+        }
+
+        .header-bottom h2 {
             font-size: 1.5em;
             color: #fff;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-            position: absolute;
-            left: 160px;
-            top: 50%;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #666;
+        }
+
+        .search-filter {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .search-btn {
+            background-color: #1d3557;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-btn:hover {
+            background-color: #457b9d;
+        }
+
+        .search-results-info {
+            text-align: center;
+            margin: 10px 0;
+            color: #457b9d;
+            font-weight: 600;
         }
 
         .header img {
@@ -105,17 +162,18 @@
         .books-container {
             max-width: 1200px;
             margin: 0 auto;
+            margin-top: 30px;
         }
 
         .books-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .book-card {
-            background: linear-gradient(135deg, #f8d7da 0%, #dc3545 100%);
+            background: linear-gradient(135deg, #a8dadc 0%, #457b9d 100%);
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -129,8 +187,7 @@
 
         .book-card img {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
+            height: 300px;
             border-radius: 10px;
             margin-bottom: 15px;
         }
@@ -138,12 +195,13 @@
         .book-title {
             font-size: 1.3em;
             font-weight: 700;
-            color: #721c24;
+            color: #1d3557;
             margin-bottom: 10px;
+        
         }
 
         .book-info {
-            color: #721c24;
+            color: #1d3557;
             margin-bottom: 5px;
         }
 
@@ -158,20 +216,23 @@
 
         .book-actions {
             margin-top: 15px;
+            justify-content: center;
         }
 
         .return-btn {
-            background-color: #721c24;
+            background-color: #1d3557;
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 5px;
+            border-radius: 100px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
         }
 
         .return-btn:hover {
-            background-color: #dc3545;
+            background-color: #457b9d;
         }
 
         .return-btn:disabled {
@@ -207,7 +268,9 @@
 <body>
     <div class="header">
         <h1><img src="sachdamuon.png" alt="Borrowed Books Logo"> Library Manage App</h1> 
-        <h2>Sách Đã Mượn</h2>
+        <div class="header-bottom">
+            <h2>Sách Đã Mượn</h2>
+        </div>
     </div>
     <div class="main-content">
         <div class="directory">
@@ -267,7 +330,7 @@
                                     ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
                                 </div>
                                 <div class="book-actions">
-                                        <button class="return-btn" onclick="returnBook('${book.bookId}')">➖</button>
+                                        <button class="return-btn" onclick="returnBook(event, '${book.bookId}')">➖</button>
                                 </div>
                             </div>
                         `).join('');
@@ -285,26 +348,35 @@
             }
         }
 
-        async function returnBook(bookId) {
+        function getBookDataFromCard(element) {
+            const card = element.closest('.book-card');
+            return {
+                bookId: card.dataset.bookId,
+            };
+        }
+
+        async function returnBook(event, bookId) {
             const button = event.target;
             button.disabled = true;
-            button.textContent = 'Đang trả...';
+            button.textContent = '...';
 
             try {
-                const formData = new FormData();
-                formData.append('userId', 'default'); // Using default test user
-                formData.append('bookId', bookId);
-
-                const response = await fetch('/api/books/return', {
+                const data = {
+                    userId: 'U001',
+                    bookId: bookId
+                };
+                
+                const response = await fetch('/btl/api/books/return', { 
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 });
-
                 const result = await response.json();
 
                 if (result.success) {
                     alert(result.message);
-                    // Reload the books list
                     await loadBorrowedBooks();
                 } else {
                     alert(result.message || 'Không thể trả sách');
@@ -313,7 +385,7 @@
                 alert('Lỗi kết nối: ' + error.message);
             } finally {
                 button.disabled = false;
-                button.textContent = 'Trả Sách';
+                button.textContent = '➖';
             }
         }
 
