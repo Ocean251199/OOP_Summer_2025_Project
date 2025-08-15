@@ -88,9 +88,12 @@ public class LibraryService {
 
     public boolean returnBook(String userId, String bookId) {
         try {
+            System.out.println("DEBUG: Calling LibraryManager.returnBook()... - LibraryService.java:91");
             libraryManager.returnBook(userId, bookId);
             return true;
         } catch (Exception e) {
+            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:95" + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }

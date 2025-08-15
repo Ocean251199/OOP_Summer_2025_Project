@@ -219,7 +219,7 @@
             justify-content: center;
         }
 
-        .borrow-btn {
+        .return-btn {
             background-color: #1d3557;
             color: white;
             border: none;
@@ -231,11 +231,11 @@
             margin: 0 auto;
         }
 
-        .borrow-btn:hover {
+        .return-btn:hover {
             background-color: #457b9d;
         }
 
-        .borrow-btn:disabled {
+        .return-btn:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
@@ -268,7 +268,9 @@
 <body>
     <div class="header">
         <h1><img src="sachdamuon.png" alt="Borrowed Books Logo"> Library Manage App</h1> 
-        <h2>Sách Đã Mượn</h2>
+        <div class="header-bottom">
+            <h2>Sách Đã Mượn</h2>
+        </div>
     </div>
     <div class="main-content">
         <div class="directory">
@@ -328,7 +330,7 @@
                                     ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
                                 </div>
                                 <div class="book-actions">
-                                        <button class="return-btn" onclick="returnBook('${book.bookId}')">➖</button>
+                                        <button class="return-btn" onclick="returnBook(event, '${book.bookId}')">➖</button>
                                 </div>
                             </div>
                         `).join('');
@@ -346,26 +348,35 @@
             }
         }
 
-        async function returnBook(bookId) {
+        function getBookDataFromCard(element) {
+            const card = element.closest('.book-card');
+            return {
+                bookId: card.dataset.bookId,
+            };
+        }
+
+        async function returnBook(event, bookId) {
             const button = event.target;
             button.disabled = true;
-            button.textContent = 'Đang trả...';
+            button.textContent = '...';
 
             try {
-                const formData = new FormData();
-                formData.append('userId', 'default'); // Using default test user
-                formData.append('bookId', bookId);
-
-                const response = await fetch('/api/books/return', {
+                const data = {
+                    userId: 'U001',
+                    bookId: bookId
+                };
+                
+                const response = await fetch('/btl/api/books/return', { 
                     method: 'POST',
-                    body: formData
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 });
-
                 const result = await response.json();
 
                 if (result.success) {
                     alert(result.message);
-                    // Reload the books list
                     await loadBorrowedBooks();
                 } else {
                     alert(result.message || 'Không thể trả sách');
@@ -374,7 +385,7 @@
                 alert('Lỗi kết nối: ' + error.message);
             } finally {
                 button.disabled = false;
-                button.textContent = 'Trả Sách';
+                button.textContent = '➖';
             }
         }
 

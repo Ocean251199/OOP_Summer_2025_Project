@@ -87,7 +87,7 @@ public class AddBookServlet extends HttpServlet {
 
             // Set default image if empty
             if (imgUrl == null || imgUrl.trim().isEmpty()) {
-                imgUrl = "https://gemini.google.com/app/74d50a86f5e0c098";
+                imgUrl = "https://plpsoft.vn/ckfinder/connector?command=Proxy&lang=vi&type=Files&currentFolder=%2FBaivietIT%2FJava%2F&hash=c245c263ce0eced480effe66bbede6b4d46c15ae&fileName=Plpsoft-Java.jpg";
             }
 
             // Parse year

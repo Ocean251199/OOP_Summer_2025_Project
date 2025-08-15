@@ -60,18 +60,24 @@ public class LibraryManager {
     }
 
     // Handle returning a book
-    public void returnBook(String userId, String bookId) {
+    public boolean returnBook(String userId, String bookId) {
         User user = users.get(userId);
         Book book = books.get(bookId);
 
+        
+        System.out.println("DEBUG: Looking for user ' - LibraryManager.java:68" + userId + "'. Found: " + (user != null));
+        System.out.println("DEBUG: Looking for book ' - LibraryManager.java:69" + bookId + "'. Found: " + (book != null));
         if (user == null || book == null) {
-            System.out.println("User or Book not found. - LibraryManager.java:68");
-            return;
+            System.out.println("User or Book not found. - LibraryManager.java:71");
+            return false;
         }
 
+        System.out.println("DEBUG: User - LibraryManager.java:75" + userId + " has " + user.getBorrowedBookIds().size() + " books borrowed.");
+        System.out.println("DEBUG: Does user - LibraryManager.java:76" + userId + " already have book " + bookId + "? " + user.getBorrowedBookIds().contains(bookId));
+        
         if (!user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User hasn't borrowed this book. - LibraryManager.java:73");
-            return;
+            System.out.println("User hasn't borrowed this book. - LibraryManager.java:79");
+            return false;
         }
 
         user.getBorrowedBookIds().remove(bookId);
@@ -79,7 +85,9 @@ public class LibraryManager {
         Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
         records.add(record);
 
-        System.out.println("Return successful: - LibraryManager.java:82" + record);
+        
+        System.out.println("Return successful: - LibraryManager.java:89" + record);
+        return true; // Thành công
     }
 
     // View logs
