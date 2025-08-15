@@ -10,7 +10,7 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background: #fff; 
+            background: #e9efff; 
             color: #333;
             /**display: flex;
             justify-content: center;
@@ -40,19 +40,26 @@
             flex-direction: column;
             align-items: center;
         }
+        
         .header h1 {
             font-size: 2em;
             margin: 0;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-        .header h2 {
+
+        .header-bottom {
+            display: flex;
+            flex-direction: row;
+            gap: 500px;
+            margin-left: 220px;
+            margin-top: -75px;
+        }
+
+        .header-bottom h2 {
             font-size: 1.5em;
             color: #fff;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-            position: absolute;
-            left: 160px;
-            top: 50%;
         }
 
         .header img {
@@ -88,6 +95,28 @@
             font-size: 1.2em;
             margin: 0;
         }
+
+        .directory ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .directory li {
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .directory a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        .directory a:hover {
+            color: #a8dadc;
+        }
+
         .main-content {
             display: flex;
             flex: 1;
@@ -209,13 +238,15 @@
 <body>
     <div class="header">
         <h1><img src="addbook.png" alt="LM Logo"> Library Manage App</h1> 
-        <h2>Thêm những cuốn sách mới vào kho</h2>
+        <div class="header-bottom">
+            <h2>Thêm Sách Mới</h2>
+        </div>
     </div>
     <div class="main-content">
         <div class="directory">
             <h1>Thư Mục</h1>
             <ul>
-                <li><a href="AvailableBooks.html">Sách Chưa Mượn</a></li>
+                <li><a href="AvailableBooks.html">Sách Trong Kho</a></li>
                 <li><a href="BorrowedBooks.html">Sách Đã Mượn</a></li>
                 <li><a href="Index.html">Trang Chủ</a></li>
             </ul>
