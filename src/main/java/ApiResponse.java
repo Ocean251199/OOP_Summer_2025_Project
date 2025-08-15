@@ -1,10 +1,11 @@
+// Phản hồi API chung cho tất cả các yêu cầu
 public class ApiResponse<T> {
     private boolean success;
     private String message;
     private T data;
     private String error;
 
-    // Constructors
+    // Khởi tạo
     public ApiResponse() {}
 
     public ApiResponse(boolean success, String message, T data) {
@@ -20,7 +21,7 @@ public class ApiResponse<T> {
         this.error = error;
     }
 
-    // Static methods for easy response creation
+    // Phương thức tĩnh để tạo phản hồi thành công
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(true, "Success", data);
     }

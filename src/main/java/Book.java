@@ -1,5 +1,6 @@
 import java.util.List;
 
+// Đại diện cho một cuốn sách trong thư viện
 public class Book {
     private String bookId;
     private String title;
@@ -10,7 +11,7 @@ public class Book {
     private int borrowCount;
     private String imgUrl;
 
-    // Constructor
+    // Khởi tạo
     public Book(String bookId, String title, String author, String publisher, int yearPublished, List<String> genres, String imgUrl) {
         this.bookId = bookId;
         this.title = title;
@@ -88,8 +89,8 @@ public class Book {
         this.imgUrl = imgUrl;
     }
 
-    
-    // Optional: toString for debugging
+
+    // Phương thức toString để hiển thị thông tin sách
     @Override
     public String toString() {
         return "Book{" +

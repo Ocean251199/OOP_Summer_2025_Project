@@ -1,6 +1,9 @@
 import java.util.Arrays;
 
+// Kiểm thử thư viện
 public class LibTest {
+
+    // Phương thức chính
     public static void main(String[] args) {
         Book book = new Book(
             "B001",

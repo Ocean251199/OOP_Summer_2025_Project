@@ -8,17 +8,20 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+// Servlet để xử lý các yêu cầu liên quan đến sách
 @WebServlet("/api/books")
 public class BooksServlet extends HttpServlet {
     private LibraryService libraryService;
     private ObjectMapper objectMapper;
 
+    // Khởi tạo
     @Override
     public void init() throws ServletException {
         libraryService = LibraryService.getInstance();
         objectMapper = new ObjectMapper();
     }
 
+    // Xử lý yêu cầu GET để lấy danh sách sách
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
@@ -31,6 +34,7 @@ public class BooksServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
+        // Lấy tham số từ yêu cầu
         try {
             String type = request.getParameter("type");
             List<BookDto> books;
@@ -54,6 +58,7 @@ public class BooksServlet extends HttpServlet {
         }
     }
 
+    // Xử lý yêu cầu OPTIONS để hỗ trợ CORS
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
