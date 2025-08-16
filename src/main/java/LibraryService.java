@@ -1,6 +1,10 @@
 import java.util.*;
 import java.util.stream.Collectors;
 
+import model.Book;
+import model.User;
+import service.LibraryManager;
+
 public class LibraryService {
     private LibraryManager libraryManager;
     private static LibraryService instance;

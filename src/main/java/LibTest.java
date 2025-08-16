@@ -1,5 +1,7 @@
 import java.util.Arrays;
 
+import model.Book;
+
 public class LibTest {
     public static void main(String[] args) {
         Book book = new Book(
