@@ -1,5 +1,8 @@
 package dto;
 
+// Lớp DTO cho sách
+
+// CHỈNH LẠI
 public class BookDto {
     private String id;
     private String title;
@@ -7,7 +10,7 @@ public class BookDto {
     private String genre;
     private boolean borrowed;
 
-    // Constructors
+    // Khởi tạo
     public BookDto() {}
 
     public BookDto(String id, String title, String author, String genre, boolean borrowed) {

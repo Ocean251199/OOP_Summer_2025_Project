@@ -1,11 +1,6 @@
-package model;
-
-import service.LibraryManager;
-
-// Quản trị viên thư viện
+// Admin class representing an administrator user
 public class Admin extends User {
 
-    // Khởi tạo
     public Admin(String userId, String email, String password) {
         super(userId, email, password);
     }
@@ -23,7 +18,7 @@ public class Admin extends User {
         manager.removeBook(bookId);
     }
 
-    public void viewBorrowedBooks(String userId, LibraryManager manager) {
-        manager.getBorrowedBooks(userId);
+    public void viewBorrowedBooks(LibraryManager manager) {
+        System.out.println(manager.getBorrowedBooks());
     }
 }

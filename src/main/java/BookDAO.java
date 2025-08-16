@@ -1,19 +1,14 @@
-package dao;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Book;
-import service.DBHelper;
 
 // Lớp DAO cho sách
 public class BookDAO {
 
-    // Thêm sách vào cơ sở dữ liệu
+    // Insert a Book into the database
     public void addBook(Book book) {
         String sql = "INSERT INTO books(bookId, title, author, publisher, yearPublished, genres, borrowCount, imgUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Thực hiện thêm sách
         try (Connection conn = DBHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -32,21 +27,7 @@ public class BookDAO {
         }
     }
 
-    // Xóa sách
-    public void removeBooks(String bookIds) {
-        String sql = "DELETE FROM books WHERE bookId = ?";
-
-        try (Connection conn = DBHelper.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, bookIds);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Lấy tất cả sách
+    // Load all books from the database
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books";
@@ -55,7 +36,6 @@ public class BookDAO {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
-            // Duyệt qua kết quả và thêm vào danh sách
             while (rs.next()) {
                 books.add(new Book(
                         rs.getString("bookId"),
@@ -73,7 +53,7 @@ public class BookDAO {
         return books;
     }
 
-    // Cập nhật số lần mượn
+    // Update borrow count
     public void updateBorrowCount(String bookId, int borrowCount) {
         String sql = "UPDATE books SET borrowCount = ? WHERE bookId = ?";
 
@@ -89,7 +69,6 @@ public class BookDAO {
         }
     }
 
-    // Lấy sách theo ID
     public Book getBookById(String bookId) {
         String sql = "SELECT * FROM books WHERE bookId = ?";
         Book book = null;
@@ -100,7 +79,6 @@ public class BookDAO {
             pstmt.setString(1, bookId);
             ResultSet rs = pstmt.executeQuery();
 
-            // Nếu tìm thấy sách
             if (rs.next()) {
                 book = new Book(
                         rs.getString("bookId"),
@@ -116,26 +94,5 @@ public class BookDAO {
             e.printStackTrace();
         }
         return book;
-    }
-
-    // Cập nhật thông tin sách
-    public void updateBook(Book book) {
-        String sql = "UPDATE books SET title = ?, author = ?, publisher = ?, yearPublished = ?, genres = ?, imgUrl = ? WHERE bookId = ?";
-
-        try (Connection conn = DBHelper.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getAuthor());
-            pstmt.setString(3, book.getPublisher());
-            pstmt.setInt(4, book.getYearPublished());
-            pstmt.setString(5, String.join(",", book.getGenres())); // store as CSV
-            pstmt.setString(6, book.getImgUrl());
-            pstmt.setString(7, book.getBookId());
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

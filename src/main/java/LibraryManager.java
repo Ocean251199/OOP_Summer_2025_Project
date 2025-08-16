@@ -1,32 +1,16 @@
-package service;
-
-// import model
-import model.Book;
-import model.Record;
-import model.User;
-import model.Member;
-// import dao
-import dao.UserDAO;
-import dao.BookDAO;
-import dao.RecordDAO;
-// import type
-import type.ActionType;
 import java.util.UUID;
 
-// Lớp quản lý thư viện
 public class LibraryManager {
     private UserDAO userDAO;
     private BookDAO bookDAO;
     private RecordDAO recordDAO;
 
-    // Khởi tạo
     public LibraryManager(UserDAO userDAO, BookDAO bookDAO, RecordDAO recordDAO) {
         this.userDAO = userDAO;
         this.bookDAO = bookDAO;
         this.recordDAO = recordDAO;
     }
 
-    // Đăng ký người dùng và Thêm sách
     public void registerUser(User user) {
         userDAO.addUser(user);
     }
@@ -35,24 +19,21 @@ public class LibraryManager {
         bookDAO.addBook(book);
     }
 
-    // Mượn sách (cho member)
     public void borrowBook(String userId, String bookId) {
         User user = userDAO.getUserById(userId);
         Book book = bookDAO.getBookById(bookId);
-
-        Member member = (Member) user; // Chuyển đổi sang Member
 
         if (user == null || book == null) {
             System.out.println("User or Book not found.");
             return;
         }
 
-        if (member.getBorrowedBookIds().contains(bookId)) {
+        if (user.getBorrowedBookIds().contains(bookId)) {
             System.out.println("Already borrowed.");
             return;
         }
 
-        member.getBorrowedBookIds().add(bookId);
+        user.getBorrowedBookIds().add(bookId);
         book.incrementBorrowCount();
 
         userDAO.updateUser(user);
@@ -64,23 +45,21 @@ public class LibraryManager {
         System.out.println("Borrow successful: " + record);
     }
 
-    // Trả sách (cho member)
     public void returnBook(String userId, String bookId) {
         User user = userDAO.getUserById(userId);
         Book book = bookDAO.getBookById(bookId);
-        Member member = (Member) user; // Chuyển đổi sang Member
 
         if (user == null || book == null) {
             System.out.println("User or Book not found.");
             return;
         }
 
-        if (!member.getBorrowedBookIds().contains(bookId)) {
+        if (!user.getBorrowedBookIds().contains(bookId)) {
             System.out.println("Not borrowed.");
             return;
         }
 
-        member.getBorrowedBookIds().remove(bookId);
+        user.getBorrowedBookIds().remove(bookId);
 
         userDAO.updateUser(user);
 
@@ -90,43 +69,16 @@ public class LibraryManager {
         System.out.println("Return successful: " + record);
     }
 
-    // Xóa sách
-    public void removeBook(String bookId) {
-        Book book = bookDAO.getBookById(bookId);
-        if (book != null) {
-            bookDAO.removeBooks(bookId);
-            System.out.println("Book removed: " + book);
-        } else {
-            System.out.println("Book not found.");
-        }
+    public List<User> getAllUsers() {
+        return userDAO.getAllUsers();
     }
 
-    // Lấy sách đã mượn
-    public void getBorrowedBooks(String userId) {
-        User user = userDAO.getUserById(userId);
-        Member member = (Member) user; // Chuyển đổi sang Member
-        if (user != null) {
-            System.out.println("Borrowed Books: " + member.getBorrowedBookIds());
-        } else {
-            System.out.println("User not found.");
-        }
-    }
-
-    // In
     public void printAllRecords() {
         for (Record r : recordDAO.getAllRecords()) {
             System.out.println(r);
         }
     }
-    
-    // In tất cả sách
-    public void printAllBooks() {
-        for (Book b : bookDAO.getAllBooks()) {
-            System.out.println(b);
-        }
-    }
 
-    // Tạo ID cho bản ghi
     private String generateRecordId() {
         return "REC-" + UUID.randomUUID().toString().substring(0, 8);
     }

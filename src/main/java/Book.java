@@ -1,7 +1,5 @@
-package model;
 import java.util.List;
 
-// Lớp đại diện cho sách
 public class Book {
     private String bookId;
     private String title;
@@ -89,7 +87,6 @@ public class Book {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
-
     
     // Optional: toString for debugging
     @Override
@@ -104,6 +101,5 @@ public class Book {
                 ", borrowCount=" + borrowCount +
                 '}';
     }
-
     
 }

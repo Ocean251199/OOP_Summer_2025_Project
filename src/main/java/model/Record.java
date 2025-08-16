@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 
 import type.ActionType;
 
+// Lớp đại diện cho bản ghi mượn/trả sách
 public class Record {
     private String recordId;
     private LocalDateTime timestamp;
@@ -11,6 +12,11 @@ public class Record {
     private ActionType action;
 
     // Constructor
+    public Record() {
+        this.recordId = java.util.UUID.randomUUID().toString(); // Generate a unique ID
+        this.timestamp = LocalDateTime.now(); // Default to current time
+    }
+
     public Record(String recordId, String userId, String bookId, ActionType action) {
         this.recordId = recordId;
         this.timestamp = LocalDateTime.now();  // record when it happens

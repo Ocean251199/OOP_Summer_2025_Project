@@ -1,21 +1,17 @@
-package dao;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.User;
-import model.Admin;
-import model.Member;
+
 import service.DBHelper;
+//import model.Member;
+//import model.Admin;
 
-// Lớp DAO cho người dùng
-public class UserDAO {
+// Data Access Object for User
+public class UserDao {
 
-    // Thêm người dùng
     public void addUser(User user) {
         String sql = "INSERT INTO users(userId, email, password, role) VALUES (?, ?, ?, ?)";
 
-        // Thực hiện thêm người dùng
         try (Connection conn = DBHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -30,12 +26,10 @@ public class UserDAO {
         }
     }
 
-    // Xóa người dùng
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
 
-        // Thực hiện truy vấn
         try (Connection conn = DBHelper.connect();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
@@ -54,19 +48,16 @@ public class UserDAO {
         return users;
     }
 
-    // Lấy người dùng theo ID
     public User getUserById(String userId) {
         String sql = "SELECT * FROM users WHERE userId = ?";
         User user = null;
 
-        // Thực hiện truy vấn
         try (Connection conn = DBHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, userId);
             ResultSet rs = pstmt.executeQuery();
 
-            // Nếu tìm thấy người dùng
             if (rs.next()) {
                 String role = rs.getString("role");
                 if (role.equals("ADMIN")) {
@@ -79,23 +70,5 @@ public class UserDAO {
             e.printStackTrace();
         }
         return user;
-    }
-
-    // Cập nhật thông tin người dùng
-    public void updateUser(User user) {
-        String sql = "UPDATE users SET email = ?, password = ? WHERE userId = ?";
-
-        // Thực hiện cập nhật thông tin người dùng
-        try (Connection conn = DBHelper.connect();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, user.getEmail());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getUserId());
-
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
