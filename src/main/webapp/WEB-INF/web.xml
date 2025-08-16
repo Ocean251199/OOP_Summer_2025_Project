@@ -51,4 +51,25 @@
     <url-pattern>/api/books/return</url-pattern>
   </servlet-mapping>
   
+  <!--Khai báo servlet xóa sách-->
+  <servlet>
+    <servlet-name>DeleteBookServlet</servlet-name>
+    <servlet-class>DeleteBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteBookServlet</servlet-name>
+    <url-pattern>/api/books/delete</url-pattern>
+  </servlet-mapping>
+
+  <!-- Khai báo servlet tìm kiếm sách -->
+  <servlet>
+      <servlet-name>SearchBookServlet</servlet-name>
+      <servlet-class>SearchBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>SearchBookServlet</servlet-name>
+      <url-pattern>/api/books/search</url-pattern>
+  </servlet-mapping>
+
+
 </web-app>

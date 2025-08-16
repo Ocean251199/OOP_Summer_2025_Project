@@ -83,11 +83,11 @@ public class LibraryService {
     // Mượn sách
     public boolean borrowBook(String userId, String bookId) {
         try {
-            System.out.println("DEBUG: Calling LibraryManager.borrowBook()... - LibraryService.java:79"); 
+            System.out.println("DEBUG: Calling LibraryManager.borrowBook()... - LibraryService.java:86"); 
             libraryManager.borrowBook(userId, bookId);
             return true;
         } catch (Exception e) {
-            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:83" + e.getMessage()); 
+            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:90" + e.getMessage()); 
             e.printStackTrace();
             return false;
         }
@@ -96,14 +96,46 @@ public class LibraryService {
     // Trả sách
     public boolean returnBook(String userId, String bookId) {
         try {
-            System.out.println("DEBUG: Calling LibraryManager.returnBook()... - LibraryService.java:91");
+            System.out.println("DEBUG: Calling LibraryManager.returnBook()... - LibraryService.java:99");
             libraryManager.returnBook(userId, bookId);
             return true;
         } catch (Exception e) {
-            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:95" + e.getMessage());
+            System.err.println("DEBUG: Exception caught in LibraryService: - LibraryService.java:103" + e.getMessage());
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<BookDto> searchBooks(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return getAllBooks();
+        }
+        
+        String lowercaseQuery = query.toLowerCase();
+        
+        return libraryManager.getBooks().values().stream()
+                .filter(book -> 
+                    book.getTitle().toLowerCase().contains(lowercaseQuery) ||
+                    book.getAuthor().toLowerCase().contains(lowercaseQuery) ||
+                    book.getPublisher().toLowerCase().contains(lowercaseQuery)
+                )
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public boolean deleteBook(String bookId) {
+    // Kiểm tra xem sách có tồn tại không
+        if (!libraryManager.getBooks().containsKey(bookId)) {
+            System.err.println("Book not found for deletion: - LibraryService.java:129" + bookId);
+            return false;
+        }
+        // Kiểm tra xem sách có đang được mượn không
+        if (!isBookAvailable(bookId)) {
+            System.err.println("Cannot delete book: Book is currently borrowed: - LibraryService.java:134" + bookId);
+            return false;
+        }
+        // Xóa sách khỏi LibraryManager
+        return libraryManager.deleteBook(bookId);
     }
 
     // Kiểm tra sách có không

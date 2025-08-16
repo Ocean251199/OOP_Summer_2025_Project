@@ -28,24 +28,24 @@ public class LibraryManager {
         User user = users.get(userId);
         Book book = books.get(bookId);
 
-        System.out.println("DEBUG: Looking for user ' - LibraryManager.java:29" + userId + "'. Found: " + (user != null));
-        System.out.println("DEBUG: Looking for book ' - LibraryManager.java:30" + bookId + "'. Found: " + (book != null));
+        System.out.println("DEBUG: Looking for user ' - LibraryManager.java:31" + userId + "'. Found: " + (user != null));
+        System.out.println("DEBUG: Looking for book ' - LibraryManager.java:32" + bookId + "'. Found: " + (book != null));
 
         if (user == null) {
-            System.out.println("User not found. - LibraryManager.java:33");
+            System.out.println("User not found. - LibraryManager.java:35");
             return false; // Thất bại
         }
 
         if (book == null) {
-            System.out.println("Book not found. - LibraryManager.java:38");
+            System.out.println("Book not found. - LibraryManager.java:40");
             return false; // Thất bại
         }
 
-        System.out.println("DEBUG: User - LibraryManager.java:42" + userId + " has " + user.getBorrowedBookIds().size() + " books borrowed.");
-        System.out.println("DEBUG: Does user - LibraryManager.java:43" + userId + " already have book " + bookId + "? " + user.getBorrowedBookIds().contains(bookId));
+        System.out.println("DEBUG: User - LibraryManager.java:44" + userId + " has " + user.getBorrowedBookIds().size() + " books borrowed.");
+        System.out.println("DEBUG: Does user - LibraryManager.java:45" + userId + " already have book " + bookId + "? " + user.getBorrowedBookIds().contains(bookId));
 
         if (user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User already borrowed this book. - LibraryManager.java:46");
+            System.out.println("User already borrowed this book. - LibraryManager.java:48");
             return false; // Thất bại
         }
 
@@ -57,7 +57,7 @@ public class LibraryManager {
         Record record = new Record(generateRecordId(), userId, bookId, ActionType.BORROW);
         records.add(record);
 
-        System.out.println("Borrow successful: - LibraryManager.java:58" + record);
+        System.out.println("Borrow successful: - LibraryManager.java:60" + record);
         return true; // Thành công
     }
 
@@ -67,18 +67,18 @@ public class LibraryManager {
         Book book = books.get(bookId);
 
         
-        System.out.println("DEBUG: Looking for user ' - LibraryManager.java:68" + userId + "'. Found: " + (user != null));
-        System.out.println("DEBUG: Looking for book ' - LibraryManager.java:69" + bookId + "'. Found: " + (book != null));
+        System.out.println("DEBUG: Looking for user ' - LibraryManager.java:70" + userId + "'. Found: " + (user != null));
+        System.out.println("DEBUG: Looking for book ' - LibraryManager.java:71" + bookId + "'. Found: " + (book != null));
         if (user == null || book == null) {
-            System.out.println("User or Book not found. - LibraryManager.java:71");
+            System.out.println("User or Book not found. - LibraryManager.java:73");
             return false;
         }
 
-        System.out.println("DEBUG: User - LibraryManager.java:75" + userId + " has " + user.getBorrowedBookIds().size() + " books borrowed.");
-        System.out.println("DEBUG: Does user - LibraryManager.java:76" + userId + " already have book " + bookId + "? " + user.getBorrowedBookIds().contains(bookId));
+        System.out.println("DEBUG: User - LibraryManager.java:77" + userId + " has " + user.getBorrowedBookIds().size() + " books borrowed.");
+        System.out.println("DEBUG: Does user - LibraryManager.java:78" + userId + " already have book " + bookId + "? " + user.getBorrowedBookIds().contains(bookId));
         
         if (!user.getBorrowedBookIds().contains(bookId)) {
-            System.out.println("User hasn't borrowed this book. - LibraryManager.java:79");
+            System.out.println("User hasn't borrowed this book. - LibraryManager.java:81");
             return false;
         }
 
@@ -88,10 +88,19 @@ public class LibraryManager {
         records.add(record);
 
         
-        System.out.println("Return successful: - LibraryManager.java:89" + record);
+        System.out.println("Return successful: - LibraryManager.java:91" + record);
         return true; // Thành công
     }
 
+    public boolean deleteBook(String bookId) {
+        if (books.containsKey(bookId)) {
+            books.remove(bookId);
+            System.out.println("Book deleted: - LibraryManager.java:98" + bookId);
+            return true;
+        }
+        return false;
+    }
+    
     // Xem nhật ký
     public void printAllRecords() {
         for (Record r : records) {
