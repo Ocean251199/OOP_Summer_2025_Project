@@ -4,9 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import service.DBHelper;
-import model.User;
-import model.Admin;
-import model.Member;
+import model.*;
 
 public class UserDAO {
 
@@ -80,6 +78,11 @@ public class UserDAO {
         }
 
         return user; // null if not found
+    }
+
+    public void printBorrowedBooks(User user) {
+        List<String> borrowed = user.getBorrowedBookIds();
+        System.out.println("Borrowed books: " + borrowed);
     }
 
 }
