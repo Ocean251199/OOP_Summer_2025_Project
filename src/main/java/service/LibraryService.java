@@ -1,8 +1,7 @@
 package service;
 
-import dao.BookDAO;
-import dao.UserDAO;
-import dao.RecordDAO;
+import dao.*;
+
 import dto.BookDTO;
 import dto.UserDTO;
 import dto.RecordDTO;

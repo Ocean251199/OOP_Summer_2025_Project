@@ -1,13 +1,12 @@
-import model.Book;
-import model.Record;
-import model.User;
+package service;
+
+import model.*;
 import type.ActionType;
 
 import java.util.UUID;
 
-import dao.BookDAO;
-import dao.RecordDAO;
-import dao.UserDAO;
+import dao.*;
+
 
 public class LibraryManager {
     private UserDAO userDAO;

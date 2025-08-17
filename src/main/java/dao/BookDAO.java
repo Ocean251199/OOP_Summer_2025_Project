@@ -91,4 +91,34 @@ public class BookDAO {
             e.printStackTrace();
         }
     }
+
+    // Get a book by its ID
+    public Book getBookById(String bookId) {
+        String sql = "SELECT * FROM books WHERE bookId = ?";
+        Book book = null;
+
+        try (Connection conn = DBHelper.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, bookId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    book = new Book(
+                            rs.getString("bookId"),
+                            rs.getString("title"),
+                            rs.getString("author"),
+                            rs.getString("publisher"),
+                            rs.getInt("yearPublished"),
+                            List.of(rs.getString("genres").split(",")),
+                            rs.getString("imgUrl")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return book; // null if not found
+    }
+
 }

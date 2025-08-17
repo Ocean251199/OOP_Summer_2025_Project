@@ -16,8 +16,8 @@ public class Admin extends User {
         manager.addBook(book);
     }
 
-    public void removeBook(String bookId, LibraryManager manager) {
-        manager.removeBook(bookId);
+    public void removeBook(Book book, LibraryManager manager) {
+        manager.removeBook(book);
     }
 
     public void viewBorrowedBooks(Member member) {
