@@ -2,11 +2,8 @@ package service;
 
 import model.*;
 import type.ActionType;
-
 import java.util.UUID;
-
 import dao.*;
-
 
 public class LibraryManager {
     private UserDAO userDAO;
@@ -51,7 +48,7 @@ public class LibraryManager {
         userDAO.updateUser(user);
         bookDAO.updateBook(book);
 
-        Record record = new Record(generateRecordId(), userId, bookId, ActionType.BORROW);
+        model.Record record = new model.Record(generateRecordId(), userId, bookId, ActionType.BORROW);
         recordDAO.addRecord(record);
 
         System.out.println("Borrow successful: " + record);
@@ -75,14 +72,14 @@ public class LibraryManager {
 
         userDAO.updateUser(user);
 
-        Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
+        model.Record record = new model.Record(generateRecordId(), userId, bookId, ActionType.RETURN);
         recordDAO.addRecord(record);
 
         System.out.println("Return successful: " + record);
     }
 
     public void printAllRecords() {
-        for (Record r : recordDAO.getAllRecords()) {
+        for (model.Record r : recordDAO.getAllRecords()) {
             System.out.println(r);
         }
     }
