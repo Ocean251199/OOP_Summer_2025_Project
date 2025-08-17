@@ -4,6 +4,9 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import service.DBHelper;
+import model.Record;
+import type.*;
 
 public class RecordDAO {
 

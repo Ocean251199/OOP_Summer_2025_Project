@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Book;
+import service.DBHelper;
 
 public class BookDAO {
 
@@ -24,6 +25,26 @@ public class BookDAO {
             pstmt.setString(8, book.getImgUrl());
 
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Remove a book by bookId
+    public void removeBookFromDB(String bookId) {
+        String sql = "DELETE FROM books WHERE bookId = ?";
+
+        try (Connection conn = DBHelper.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, bookId);
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                System.out.println("No book found with ID: " + bookId);
+            } else {
+                System.out.println("Book with ID " + bookId + " has been removed.");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

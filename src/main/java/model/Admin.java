@@ -20,7 +20,7 @@ public class Admin extends User {
         manager.removeBook(bookId);
     }
 
-    public void viewBorrowedBooks(LibraryManager manager) {
-        System.out.println(manager.getBorrowedBooks());
+    public void viewBorrowedBooks(Member member) {
+        System.out.println(member.getBorrowedBookIds());
     }
 }

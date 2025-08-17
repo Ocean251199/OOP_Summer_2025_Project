@@ -3,6 +3,12 @@ import model.Record;
 import model.User;
 import type.ActionType;
 
+import java.util.UUID;
+
+import dao.BookDAO;
+import dao.RecordDAO;
+import dao.UserDAO;
+
 public class LibraryManager {
     private UserDAO userDAO;
     private BookDAO bookDAO;
@@ -16,6 +22,10 @@ public class LibraryManager {
 
     public void registerUser(User user) {
         userDAO.addUser(user);
+    }
+
+    public void removeBook(Book book) {
+        bookDAO.removeBookFromDB(book.getBookId());
     }
 
     public void addBook(Book book) {
