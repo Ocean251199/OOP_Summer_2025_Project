@@ -41,6 +41,36 @@
             align-items: center;
         }
         
+        .user-status {
+            position: absolute;
+            top: 20px;
+            right: 100px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        .user-status a, .user-status button {
+            color: #fff;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .user-status a:hover, .user-status button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        #usernameDisplay {
+            font-weight: 600;
+        }
+
         .header h1 {
             font-size: 2em;
             margin: 0;
@@ -237,6 +267,11 @@
 </head>
 <body>
     <div class="header">
+        <div class="user-status">
+            <span id="usernameDisplay" style="display:none;"></span>
+            <a id="authLink" href="#">Đăng nhập</a>
+            <button id="logoutBtn" style="display:none;" onclick="handleLogout()">Đăng Xuất</button>
+        </div>
         <h1><img src="addbook.png" alt="LM Logo"> Library Manage App</h1> 
         <div class="header-bottom">
             <h2>Thêm Sách Mới Vào Kho</h2>
@@ -290,10 +325,36 @@
     </div>
     
     <script>
+        const booksGrid = document.getElementById('books-grid');
+        const loadingDiv = document.getElementById('loading');
+        const errorDiv = document.getElementById('error-message');
+
+
+        function checkLoginState() {
+            const userId = localStorage.getItem('loggedInUserId');
+            const authLink = document.getElementById('authLink');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            if (userId) {
+                authLink.textContent = userId;
+                authLink.href = '#'; 
+                logoutBtn.style.display = 'block';
+            } else {
+                authLink.textContent = 'Đăng nhập';
+                authLink.href = 'SignInScreen.html';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('loggedInUserId');
+            alert('Đã đăng xuất thành công!');
+            window.location.reload(); 
+        }
+
+
         document.getElementById('addBookForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // THAY FormData BẰNG URLSearchParams
             const params = new URLSearchParams();
             params.append('title', document.getElementById('title').value.trim());
             params.append('author', document.getElementById('author').value.trim());
@@ -349,6 +410,9 @@
                 submitButton.disabled = false;
                 submitButton.textContent = 'Thêm Sách';
             }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLoginState();
         });
     </script>
 </body>

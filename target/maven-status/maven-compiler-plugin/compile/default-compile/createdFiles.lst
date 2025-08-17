@@ -2,12 +2,15 @@ dto\BookDto.class
 ActionType.class
 BorrowBookServlet.class
 LibTest.class
+LoginServlet.class
 SearchBookServlet.class
 LibraryManager.class
 ApiResponse.class
 BooksServlet.class
 Book.class
+RegisterUserServlet.class
 Record.class
+UserDto.class
 AddBookServlet.class
 User.class
 BookDto.class

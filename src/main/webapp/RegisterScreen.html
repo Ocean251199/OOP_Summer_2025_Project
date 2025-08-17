@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng Ký - MindCompanion</title>
+    <title>Đăng Ký</title>
     <link rel="icon" type="image/jpg" href="InkedGemini_Generated_Image_r9fh3ir9fh3ir9fh_LI.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -259,27 +259,50 @@
     </div>
 
     <script>
-        function handleRegister(event) {
-            event.preventDefault();
-            const username = document.getElementById('username').value;
+        async function handleRegister(event) {
+            event.preventDefault(); 
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            
-            // Placeholder for actual registration logic
-            if (username && email && password && confirmPassword) {
-                if (password === confirmPassword) {
-                    alert('Đăng ký thành công! Chuyển hướng đến trang đăng nhập...');
-                    // Future redirection logic here
-                    setTimeout(goToLogin, 2000);
-                } else {
-                    alert('Mật khẩu và xác nhận mật khẩu không khớp.');
-                }
-            } else {
-                alert('Vui lòng điền đầy đủ thông tin.');
-            }
-        }
+            const confirmPassword = document.getElementById('confirm-password').value; 
+            const registerBtn = document.querySelector('.register-button');
 
+            
+            if (password !== confirmPassword) {
+                alert('Mật khẩu và xác nhận mật khẩu không khớp.');
+                return;
+            }
+
+            registerBtn.disabled = true;
+            registerBtn.textContent = 'Đang xử lý...';
+
+            try {
+                const response = await fetch('/btl/api/users/register', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                    goToLogin(); 
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Đăng Ký';
+            }
+    }
         function goToLogin() {
             document.querySelector('.register-screen').style.transform = 'translateX(-100%)';
             document.querySelector('.register-screen').style.opacity = '0';

@@ -71,5 +71,24 @@
       <url-pattern>/api/books/search</url-pattern>
   </servlet-mapping>
 
+  <!-- Khai báo servlet đăng ký người dùng -->
+  <servlet>
+      <servlet-name>RegisterUserServlet</servlet-name>
+      <servlet-class>RegisterUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>RegisterUserServlet</servlet-name>
+      <url-pattern>/api/users/register</url-pattern>
+  </servlet-mapping>
+
+<!--Khai báo servlet đăng nhập người dùng -->
+  <servlet>
+      <servlet-name>LoginServlet</servlet-name>
+      <servlet-class>LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>LoginServlet</servlet-name>
+      <url-pattern>/api/users/login</url-pattern>
+  </servlet-mapping>
 
 </web-app>

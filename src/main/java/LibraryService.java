@@ -145,6 +145,42 @@ public class LibraryService {
                 .noneMatch(user -> user.getBorrowedBookIds().contains(bookId));
     }
 
+    public boolean registerUser(String email, String password) {
+        if (isEmailExists(email)) {
+            return false; 
+        }
+
+        String userId = generateUserId();
+        User newUser = new User(userId, email, password);
+        libraryManager.registerUser(newUser);
+
+        return true; // Đăng ký thành công
+    }
+
+    //kiểm tra email
+    private boolean isEmailExists(String email) {
+        return libraryManager.getUsers().values().stream()
+                .anyMatch(user -> user.getEmail().equalsIgnoreCase(email));
+    }
+
+    // Tạo ID người dùng mới
+    private String generateUserId() {
+        int nextId = libraryManager.getUsers().size() + 1;
+        return "U" + String.format("%03d", nextId);
+    }
+
+    public UserDto validateLogin(String email, String password) {
+        User user = libraryManager.getUsers().values().stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email) && u.getPassword().equals(password))
+                .findFirst()
+                .orElse(null);
+
+        if (user != null) {
+            return new UserDto(user.getUserId(), user.getEmail());
+        }
+        return null; 
+    }
+
     private BookDto convertToDto(Book book) {
         return new BookDto(
                 book.getBookId(),

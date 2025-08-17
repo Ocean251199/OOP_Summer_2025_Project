@@ -8,25 +8,21 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-// Servlet để xử lý yêu cầu mượn sách
-@WebServlet("/api/books/borrow")
-public class BorrowBookServlet extends HttpServlet {
+@WebServlet("/api/users/login")
+public class LoginServlet extends HttpServlet {
     private LibraryService libraryService;
     private ObjectMapper objectMapper;
 
-    // Khởi tạo
     @Override
     public void init() throws ServletException {
         libraryService = LibraryService.getInstance();
         objectMapper = new ObjectMapper();
     }
 
-    // Xử lý yêu cầu POST để mượn sách
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-                System.out.println("DEBUG: Entering BorrowBookServlet.doPost() - BorrowBookServlet.java:28");
-
+        
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         
@@ -36,44 +32,26 @@ public class BorrowBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), Map.class);
-            String userId = requestBody.get("userId");
-            String bookId = requestBody.get("bookId");
-    
-            System.out.println("DEBUG: Servlet nhận được  userId: ' - BorrowBookServlet.java:44" + userId + "', bookId: '" + bookId + "'");
-            // Kiểm tra tham số bắt buộc
-            if (userId == null || userId.trim().isEmpty() ||
-                bookId == null || bookId.trim().isEmpty()) {
+            String email = requestBody.get("email");
+            String password = requestBody.get("password");
 
-                ApiResponse<Object> errorResponse = ApiResponse.error("User ID và Book ID là bắt buộc");
+            if (email == null || email.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+                ApiResponse<Object> errorResponse = ApiResponse.error("Email và mật khẩu không được để trống.");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
                 return;
             }
 
-            if (userId == null || userId.trim().isEmpty()) {
-                System.out.println("User ID không được để trống. - BorrowBookServlet.java:56");
-            }
+            UserDto userDto = libraryService.validateLogin(email, password);
 
-            if (bookId == null || bookId.trim().isEmpty()) {
-                System.out.println("Book ID không được để trống. - BorrowBookServlet.java:60");
-            }
-            // Dùng người dùng mặc định nếu không được cung cấp
-            if ("default".equals(userId.trim())) {
-                userId = "U001";
-            }
-
-            // Mượn sách thành công và thất bại
-            boolean success = libraryService.borrowBook(userId, bookId);
-            
-            if (success) {
-                ApiResponse<Object> successResponse = ApiResponse.success("Mượn sách thành công", null);
+            if (userDto != null) {
+                ApiResponse<UserDto> successResponse = ApiResponse.success("Đăng nhập thành công", userDto);
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write(objectMapper.writeValueAsString(successResponse));
             } else {
-                ApiResponse<Object> errorResponse = ApiResponse.error("Không thể mượn sách");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                ApiResponse<Object> errorResponse = ApiResponse.error("Email hoặc mật khẩu không chính xác.");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
             }
 
@@ -84,7 +62,6 @@ public class BorrowBookServlet extends HttpServlet {
         }
     }
 
-    // Xử lý yêu cầu OPTIONS để hỗ trợ CORS
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
