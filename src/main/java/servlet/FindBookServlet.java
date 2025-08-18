@@ -8,11 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.*;
+import dto.ApiResponse;
 import service.LibraryService;
 
 @WebServlet("/api/books/borrow")
-public class BorrowBookServlet extends HttpServlet {
+public class FindBookServlet extends HttpServlet {
     private LibraryService libraryService;
     private ObjectMapper objectMapper;
 
@@ -35,8 +35,10 @@ public class BorrowBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            String userId = request.getParameter("userId");
-            String bookId = request.getParameter("bookId");
+            // Parse JSON body
+            BorrowRequest borrowRequest = objectMapper.readValue(request.getReader(), BorrowRequest.class);
+            String userId = borrowRequest.getUserId();
+            String bookId = borrowRequest.getBookId();
 
             // Validate input
             if (userId == null || userId.trim().isEmpty() ||
@@ -79,5 +81,17 @@ public class BorrowBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setStatus(HttpServletResponse.SC_OK);
+    }
+
+    // --- Helper DTO for parsing JSON ---
+    public static class BorrowRequest {
+        private String userId;
+        private String bookId;
+
+        public String getUserId() { return userId; }
+        public void setUserId(String userId) { this.userId = userId; }
+
+        public String getBookId() { return bookId; }
+        public void setBookId(String bookId) { this.bookId = bookId; }
     }
 }

@@ -50,18 +50,13 @@ public class BookDAO {
         }
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     // Get top N books sorted by borrowCount descending
     public List<Book> getTopBooks(int limit) {
         List<Book> books = new ArrayList<>();
         String sql = "SELECT * FROM books ORDER BY borrowCount DESC LIMIT ?";
 
         try (Connection conn = DBHelper.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, limit);
             try (ResultSet rs = pstmt.executeQuery()) {
@@ -84,10 +79,6 @@ public class BookDAO {
         return books;
     }
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     // Load all books from the database
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();

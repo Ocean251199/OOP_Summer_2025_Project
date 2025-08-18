@@ -1,11 +1,3 @@
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 package service;
 
 import dao.*;
@@ -71,24 +63,14 @@ public class LibraryService {
         return user != null ? Optional.of(mapToDTO(user)) : Optional.empty();
     }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
     // ---------------- User Listing ----------------
     public List<UserDTO> getAllUsers() {
-        List<User> users = userDAO.getAllUsers(); // fetch all User domain objects from DAO
+        List<User> users = userDAO.getAllUsers();
         return users.stream()
-                    .map(this::mapToDTO)  // convert each User → UserDTO
+                    .map(this::mapToDTO)
                     .collect(Collectors.toList());
     }
 
-
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     // ---------------- Book Management ----------------
     public boolean addBook(BookDTO bookDTO) {
         try {
@@ -117,33 +99,22 @@ public class LibraryService {
     }
 
     // ---------------- Book Listing ----------------
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> Stashed changes
-
-    // Get top N books
     public List<BookDTO> getTopBooks(int limit) {
         return bookDAO.getTopBooks(limit)
-                    .stream()
+                      .stream()
+                      .map(this::mapToDTO)
+                      .collect(Collectors.toList());
+    }
+
+    public List<BookDTO> getAllBooks() {
+        List<Book> books = bookDAO.getAllBooks();
+        return books.stream()
                     .map(this::mapToDTO)
                     .collect(Collectors.toList());
     }
 
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    public List<BookDTO> getAllBooks() {
-        List<Book> books = bookDAO.getAllBooks(); // fetch all Book domain objects from DAO
-        return books.stream()
-                    .map(this::mapToDTO)   // convert each Book → BookDTO
-                    .collect(Collectors.toList());
-    }
-
     // ---------------- Borrow / Return ----------------
-        public boolean borrowBook(String userId, String bookId) {
+    public boolean borrowBook(String userId, String bookId) {
         User user = userDAO.getUserById(userId);
         Book book = bookDAO.getBookById(bookId);
 
@@ -158,7 +129,7 @@ public class LibraryService {
         }
 
         user.getBorrowedBookIds().add(bookId);
-        book.incrementBorrowCount(); // or your method for active count
+        book.incrementBorrowCount();
 
         userDAO.updateUser(user);
         bookDAO.updateBook(book);
@@ -184,7 +155,7 @@ public class LibraryService {
         }
 
         user.getBorrowedBookIds().remove(bookId);
-        book.decrementBorrowCount(); // <-- decrement on return
+        book.decrementBorrowCount();
 
         userDAO.updateUser(user);
         bookDAO.updateBook(book);
@@ -279,10 +250,3 @@ public class LibraryService {
         );
     }
 }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
