@@ -1,0 +1,48 @@
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+dto\BookDto.class
+ActionType.class
+BorrowBookServlet.class
+LibTest.class
+LibraryManager.class
+ApiResponse.class
+BooksServlet.class
+Book.class
+Record.class
+AddBookServlet.class
+User.class
+BookDto.class
+LibraryService.class
+ReturnBookServlet.class
+=======
+=======
+>>>>>>> Stashed changes
+dto\RecordDTO.class
+servlet\BooksServlet.class
+dto\UserDTO.class
+model\Record.class
+model\Member.class
+servlet\BorrowBookServlet.class
+servlet\LoginServlet.class
+type\ActionType.class
+servlet\ReturnBookServlet.class
+dao\RecordDAO.class
+dto\BookDTO.class
+dao\UserDAO.class
+model\User.class
+service\DBHelper.class
+dao\UserDAO$1.class
+dto\ApiResponse.class
+dao\BookDAO.class
+servlet\AddBookServlet.class
+model\Book.class
+servlet\RegisterServlet.class
+service\LibraryService.class
+model\Admin.class
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes

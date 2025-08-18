@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 package service;
 
 import dao.*;
@@ -63,6 +68,18 @@ public class LibraryService {
         return user != null ? Optional.of(mapToDTO(user)) : Optional.empty();
     }
 
+<<<<<<< Updated upstream
+=======
+    // ---------------- User Listing ----------------
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userDAO.getAllUsers(); // fetch all User domain objects from DAO
+        return users.stream()
+                    .map(this::mapToDTO)  // convert each User → UserDTO
+                    .collect(Collectors.toList());
+    }
+
+
+>>>>>>> Stashed changes
     // ---------------- Book Management ----------------
     public boolean addBook(BookDTO bookDTO) {
         try {
@@ -91,6 +108,18 @@ public class LibraryService {
     }
 
     // ---------------- Book Listing ----------------
+<<<<<<< Updated upstream
+=======
+
+    // Get top N books
+    public List<BookDTO> getTopBooks(int limit) {
+        return bookDAO.getTopBooks(limit)
+                    .stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+    }
+
+>>>>>>> Stashed changes
     public List<BookDTO> getAllBooks() {
         List<Book> books = bookDAO.getAllBooks(); // fetch all Book domain objects from DAO
         return books.stream()
@@ -235,3 +264,7 @@ public class LibraryService {
         );
     }
 }
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes

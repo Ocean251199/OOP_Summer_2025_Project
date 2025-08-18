@@ -50,6 +50,38 @@ public class BookDAO {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+    // Get top N books sorted by borrowCount descending
+    public List<Book> getTopBooks(int limit) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM books ORDER BY borrowCount DESC LIMIT ?";
+
+        try (Connection conn = DBHelper.connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, limit);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(new Book(
+                            rs.getString("bookId"),
+                            rs.getString("isbn"),
+                            rs.getString("book_title"),
+                            rs.getString("book_author"),
+                            rs.getString("publisher"),
+                            rs.getInt("year_of_publication"),
+                            rs.getInt("borrowCount"),
+                            rs.getString("image_url_m")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+>>>>>>> Stashed changes
     // Load all books from the database
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();

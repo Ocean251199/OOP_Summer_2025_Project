@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sách Trong Kho - Library Manage App</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+    body { font-family: 'Inter', sans-serif; margin:0; padding:0; background:#e9efff; color:#333; }
+    .header { padding:20px; background:#457b9d; color:#fff; text-align:center; }
+    .header h1 { margin:0; font-size:2em; }
+    .controls { margin: 20px; display:flex; gap:10px; flex-wrap: wrap; align-items:center; }
+    .controls select, .controls button { padding:8px 12px; border-radius:25px; border:none; cursor:pointer; }
+    .controls button { background:#1d3557; color:#fff; }
+    .controls button:hover { background:#457b9d; }
+    table { width:100%; border-collapse: collapse; margin:20px; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.1); }
+    th, td { padding:12px; text-align:center; border-bottom:1px solid #ddd; }
+    th { background:#457b9d; color:#fff; }
+    td img { width:80px; height:auto; border-radius:5px; }
+    .borrow-btn { padding:6px 12px; border-radius:25px; border:none; background:#1d3557; color:#fff; cursor:pointer; }
+    .borrow-btn:hover { background:#457b9d; }
+    .borrow-btn:disabled { background:#ccc; cursor:not-allowed; }
+    .loading, .error, .no-books { text-align:center; padding:40px; font-size:1.2em; }
+    .error { color:#721c24; background:#f8d7da; border-radius:10px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Library Manage App - Sách Trong Kho</h1>
+</div>
+
+<div class="controls">
+    <label for="sortSelect">Sắp xếp:</label>
+    <select id="sortSelect">
+        <option value="desc">Phổ biến nhất ⬇️</option>
+        <option value="asc">Ít phổ biến nhất ⬆️</option>
+    </select>
+    <button onclick="applySort()">🔄 Sắp xếp</button>
+
+    <button onclick="loadBooks(10)">Top 10</button>
+    <button onclick="loadBooks(50)">Top 50</button>
+    <button onclick="loadBooks(100)">Top 100</button>
+</div>
+
+<div id="loading" class="loading">Đang tải...</div>
+<div id="error" class="error" style="display:none;"></div>
+
+<table id="books-table" style="display:none;">
+    <thead>
+        <tr>
+            <th>Hình ảnh</th>
+            <th>Tiêu đề</th>
+            <th>Tác giả</th>
+            <th>Nhà xuất bản</th>
+            <th>Năm xuất bản</th>
+            <th>Số lần mượn</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody id="books-table-body">
+        <!-- JS will populate rows here -->
+    </tbody>
+</table>
+
+<script>
+let allBooks = [];
+
+async function loadBooks(limit=20) {
+    const loadingDiv = document.getElementById('loading');
+    const errorDiv = document.getElementById('error');
+    const table = document.getElementById('books-table');
+
+    loadingDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
+    table.style.display = 'none';
+
+    try {
+        const sort = document.getElementById('sortSelect').value;
+        const response = await fetch(`/btl/api/books?sort=${sort}&limit=${limit}`);
+        const result = await response.json();
+
+        loadingDiv.style.display = 'none';
+
+        if(result.success){
+            allBooks = result.data;
+            renderBooks(allBooks);
+        } else {
+            errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu';
+            errorDiv.style.display = 'block';
+        }
+    } catch(error){
+        loadingDiv.style.display = 'none';
+        errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
+        errorDiv.style.display = 'block';
+    }
+}
+
+function renderBooks(books){
+    const tbody = document.getElementById('books-table-body');
+    if(books.length === 0){
+        tbody.innerHTML = '<tr><td colspan="7" class="no-books">Không có sách nào</td></tr>';
+    } else {
+        tbody.innerHTML = books.map(book => `
+            <tr>
+                <td><img src="${book.imgUrl}" alt="${book.title}"></td>
+                <td>${book.title}</td>
+                <td>${book.author}</td>
+                <td>${book.publisher}</td>
+                <td>${book.yearPublished}</td>
+                <td>${book.borrowCount}</td>
+                <td><button class="borrow-btn" onclick="borrowBook(event,'${book.bookId}')">➕ Mượn sách</button></td>
+            </tr>
+        `).join('');
+    }
+    document.getElementById('books-table').style.display = 'table';
+}
+
+function applySort(){
+    const sort = document.getElementById('sortSelect').value;
+    allBooks.sort((a,b)=> sort==='desc' ? b.borrowCount - a.borrowCount : a.borrowCount - b.borrowCount);
+    renderBooks(allBooks);
+}
+
+async function borrowBook(event, bookId){
+    const button = event.target;
+    button.disabled = true;
+    button.textContent = '...';
+
+    try {
+        const data = { userId:'U001', bookId };
+        const response = await fetch('/btl/api/books/borrow',{
+            method:'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        if(result.success){
+            alert('✅ ' + result.message);
+            await loadBooks();
+        } else {
+            alert('❌ ' + result.message);
+        }
+    } catch(error){
+        alert('❌ Lỗi kết nối: ' + error.message);
+    } finally {
+        button.disabled = false;
+        button.textContent = '➕ Mượn sách';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', ()=> loadBooks(20));
+</script>
+</body>
+</html>

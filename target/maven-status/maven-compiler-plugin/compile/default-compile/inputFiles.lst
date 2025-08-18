@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\DBHelper.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\LibraryManager.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\BooksServlet.java
@@ -24,3 +25,55 @@ D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\ReturnBookServl
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\User.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dao\UserDAO.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\Record.java
+=======
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\dto\ApiResponse.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\LibraryManager.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\BooksServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\LibTest.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\servlet\BooksServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\Record.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\servlet\AddBookServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\servlet\ReturnBookServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\AddBookServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\ActionType.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\LibraryService.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\servlet\BorrowBookServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\BookDto.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\service\LibraryService.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\User.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\Book.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\ReturnBookServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\ApiResponse.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\BorrowBookServlet.java
+C:\Users\ADMIN\Documents\GitHub\OOP_Summer_2025_Project\src\main\java\dto\BookDto.java
+=======
+=======
+>>>>>>> Stashed changes
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Admin.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dao\RecordDAO.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\User.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\BooksServlet.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dto\ApiResponse.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dto\RecordDTO.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Book.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\type\ActionType.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\service\DBHelper.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\BorrowBookServlet.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dto\BookDTO.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dto\UserDTO.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\ReturnBookServlet.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\service\LibraryService.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\LoginServlet.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Member.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Record.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dao\UserDAO.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dao\BookDAO.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\AddBookServlet.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\RegisterServlet.java
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes

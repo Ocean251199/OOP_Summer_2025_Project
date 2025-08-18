@@ -13,7 +13,7 @@
   <!-- Khai báo servlet lấy danh sách sách -->
   <servlet>
     <servlet-name>BooksServlet</servlet-name>
-    <servlet-class>BooksServlet</servlet-class>
+    <servlet-class>servlet.BooksServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>BooksServlet</servlet-name>
@@ -23,7 +23,7 @@
   <!-- Khai báo servlet mượn sách -->
   <servlet>
     <servlet-name>BorrowBookServlet</servlet-name>
-    <servlet-class>BorrowBookServlet</servlet-class>
+    <servlet-class>servlet.BorrowBookServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -34,7 +34,7 @@
   <!-- Khai báo servlet thêm sách -->
   <servlet>
     <servlet-name>AddBookServlet</servlet-name>
-    <servlet-class>AddBookServlet</servlet-class>
+    <servlet-class>servlet.AddBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>AddBookServlet</servlet-name>
@@ -44,7 +44,7 @@
   <!-- Khai báo servlet trả sách -->
   <servlet>
     <servlet-name>ReturnBookServlet</servlet-name>
-    <servlet-class>ReturnBookServlet</servlet-class>
+    <servlet-class>servlet.ReturnBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ReturnBookServlet</servlet-name>
