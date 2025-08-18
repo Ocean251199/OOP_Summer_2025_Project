@@ -2,12 +2,10 @@ package servlet;
 
 import dto.UserDTO;
 import service.LibraryService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -29,13 +27,13 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        // Check user exists
-        UserDTO userDTO = libraryService.getAllUsers().stream() // you might want a getUserByEmail() helper later
+        // Find user by email
+        UserDTO userDTO = libraryService.getAllUsers().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
                 .findFirst()
                 .orElse(null);
 
-        if (userDTO != null && "TEMP_PASSWORD".equals(password)) { // TEMP_PASSWORD placeholder for now
+        if (userDTO != null && userDTO.getPassword().equals(password)) {
             HttpSession session = req.getSession(true);
             session.setAttribute("userId", userDTO.getUserId());
             out.println("{\"success\":true,\"message\":\"Đăng nhập thành công!\"}");

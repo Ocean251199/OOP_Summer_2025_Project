@@ -2,9 +2,7 @@ package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,11 +30,10 @@ public class BooksServlet extends HttpServlet {
 
         // Enable CORS
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            // Get optional parameters
             String sort = request.getParameter("sort"); // "asc" or "desc"
             String limitParam = request.getParameter("limit");
             int limit = 20; // default Top 20
@@ -44,17 +41,14 @@ public class BooksServlet extends HttpServlet {
                 try { limit = Integer.parseInt(limitParam); } catch (NumberFormatException ignored) {}
             }
 
-            // Fetch top books
             List<BookDTO> books = libraryService.getTopBooks(limit);
 
-            // Apply sorting if requested
             if ("asc".equalsIgnoreCase(sort)) {
                 books.sort((b1, b2) -> Integer.compare(b1.getBorrowCount(), b2.getBorrowCount()));
             } else if ("desc".equalsIgnoreCase(sort)) {
                 books.sort((b1, b2) -> Integer.compare(b2.getBorrowCount(), b1.getBorrowCount()));
             }
 
-            // Send response
             ApiResponse<List<BookDTO>> successResponse = ApiResponse.success("Danh sách sách", books);
             response.setStatus(HttpServletResponse.SC_OK);
             response.getWriter().write(objectMapper.writeValueAsString(successResponse));
@@ -67,11 +61,48 @@ public class BooksServlet extends HttpServlet {
     }
 
     @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("application/json; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userId") == null) {
+            response.getWriter().write(objectMapper.writeValueAsString(
+                    ApiResponse.error("User not logged in.")
+            ));
+            return;
+        }
+
+        String userId = (String) session.getAttribute("userId");
+        String bookId = request.getParameter("bookId");
+
+        if (bookId == null) {
+            response.getWriter().write(objectMapper.writeValueAsString(
+                    ApiResponse.error("Book ID missing.")
+            ));
+            return;
+        }
+
+        boolean success = libraryService.borrowBook(userId, bookId);
+
+        if (success) {
+            response.getWriter().write(objectMapper.writeValueAsString(
+                    ApiResponse.success("Bạn đã mượn sách thành công!", null)
+            ));
+        } else {
+            response.getWriter().write(objectMapper.writeValueAsString(
+                    ApiResponse.error("Không thể mượn sách. Kiểm tra User hoặc Book.")
+            ));
+        }
+    }
+
+    @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Allow CORS preflight
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setStatus(HttpServletResponse.SC_OK);
     }
