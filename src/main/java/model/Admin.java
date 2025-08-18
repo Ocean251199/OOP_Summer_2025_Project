@@ -1,6 +1,7 @@
 package model;
 
-import service.LibraryManager;
+import dto.BookDTO;
+import service.LibraryService;
 public class Admin extends User {
 
     public Admin(String userId, String email, String password) {
@@ -12,16 +13,16 @@ public class Admin extends User {
         return "ADMIN";
     }
 
-    public void addBook(Book book, LibraryManager manager) {
+    public void addBook(BookDTO book, LibraryService manager) {
         manager.addBook(book);
     }
 
-    public void removeUser(String userId, LibraryManager manager) {
+    public void removeUser(String userId, LibraryService manager) {
         manager.removeUser(userId);
     }
 
-    public void removeBook(Book book, LibraryManager manager) {
-        manager.removeBook(book);
+    public void removeBook(Book book, LibraryService manager) {
+        manager.removeBook(book.getBookId());
     }
 
     public void viewBorrowedBooks(Member member) {
