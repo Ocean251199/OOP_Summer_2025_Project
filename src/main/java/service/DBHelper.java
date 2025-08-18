@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBHelper {
     public static Connection connect() {
         try {
-            String relativePath = "src/main/resources/db/library.db";
+            String relativePath = "src/main/resources/db/library_new.db";
             String absolutePath = new File(relativePath).getAbsolutePath();
             String url = "jdbc:sqlite:" + absolutePath;
             return DriverManager.getConnection(url);

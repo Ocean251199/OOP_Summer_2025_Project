@@ -1,28 +1,26 @@
 package model;
-import java.util.List;
 
 public class Book {
     private String bookId;
+    private String isbn;
     private String title;
     private String author;
     private String publisher;
     private int yearPublished;
-    private List<String> genres;
     private int borrowCount;
-    private String imgUrl;
+    private String imgUrl; // maps to image_url_m
 
     // Constructor
-    public Book(String bookId, String title, String author, String publisher, int yearPublished, List<String> genres, String imgUrl) {
+    public Book(String bookId, String isbn, String title, String author, String publisher, int yearPublished, int borrowCount, String imgUrl) {
         this.bookId = bookId;
+        this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.yearPublished = yearPublished;
-        this.genres = genres;
-        this.borrowCount = 0; // start at 0
+        this.borrowCount = borrowCount;
         this.imgUrl = imgUrl;
     }
-
 
     // Getters and Setters
     public String getBookId() {
@@ -31,6 +29,14 @@ public class Book {
 
     public void setBookId(String bookId) {
         this.bookId = bookId;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {
@@ -65,16 +71,12 @@ public class Book {
         this.yearPublished = yearPublished;
     }
 
-    public List<String> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<String> genres) {
-        this.genres = genres;
-    }
-
     public int getBorrowCount() {
         return borrowCount;
+    }
+
+    public void setBorrowCount(int borrowCount) {
+        this.borrowCount = borrowCount;
     }
 
     public void incrementBorrowCount() {
@@ -89,20 +91,18 @@ public class Book {
         this.imgUrl = imgUrl;
     }
 
-    
     // Optional: toString for debugging
     @Override
     public String toString() {
         return "Book{" +
                 "bookId='" + bookId + '\'' +
+                ", isbn='" + isbn + '\'' +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", yearPublished=" + yearPublished +
-                ", genres=" + genres +
                 ", borrowCount=" + borrowCount +
+                ", imgUrl='" + imgUrl + '\'' +
                 '}';
     }
-
-    
 }

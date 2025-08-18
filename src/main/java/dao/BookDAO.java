@@ -10,17 +10,17 @@ public class BookDAO {
 
     // Insert a Book into the database
     public void addBook(Book book) {
-        String sql = "INSERT INTO books(bookId, title, author, publisher, yearPublished, genres, borrowCount, imgUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO books(bookId, isbn, book_title, book_author, publisher, year_of_publication, borrowCount, image_url_m) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBHelper.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, book.getBookId());
-            pstmt.setString(2, book.getTitle());
-            pstmt.setString(3, book.getAuthor());
-            pstmt.setString(4, book.getPublisher());
-            pstmt.setInt(5, book.getYearPublished());
-            pstmt.setString(6, String.join(",", book.getGenres())); // store as CSV
+            pstmt.setString(2, book.getIsbn());
+            pstmt.setString(3, book.getTitle());
+            pstmt.setString(4, book.getAuthor());
+            pstmt.setString(5, book.getPublisher());
+            pstmt.setInt(6, book.getYearPublished());
             pstmt.setInt(7, book.getBorrowCount());
             pstmt.setString(8, book.getImgUrl());
 
@@ -35,7 +35,7 @@ public class BookDAO {
         String sql = "DELETE FROM books WHERE bookId = ?";
 
         try (Connection conn = DBHelper.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, bookId);
             int affectedRows = pstmt.executeUpdate();
@@ -62,12 +62,13 @@ public class BookDAO {
             while (rs.next()) {
                 books.add(new Book(
                         rs.getString("bookId"),
-                        rs.getString("title"),
-                        rs.getString("author"),
+                        rs.getString("isbn"),
+                        rs.getString("book_title"),
+                        rs.getString("book_author"),
                         rs.getString("publisher"),
-                        rs.getInt("yearPublished"),
-                        List.of(rs.getString("genres").split(",")),
-                        rs.getString("imgUrl")
+                        rs.getInt("year_of_publication"),
+                        rs.getInt("borrowCount"),
+                        rs.getString("image_url_m")
                 ));
             }
         } catch (SQLException e) {
@@ -98,19 +99,20 @@ public class BookDAO {
         Book book = null;
 
         try (Connection conn = DBHelper.connect();
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, bookId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     book = new Book(
                             rs.getString("bookId"),
-                            rs.getString("title"),
-                            rs.getString("author"),
+                            rs.getString("isbn"),
+                            rs.getString("book_title"),
+                            rs.getString("book_author"),
                             rs.getString("publisher"),
-                            rs.getInt("yearPublished"),
-                            List.of(rs.getString("genres").split(",")),
-                            rs.getString("imgUrl")
+                            rs.getInt("year_of_publication"),
+                            rs.getInt("borrowCount"),
+                            rs.getString("image_url_m")
                     );
                 }
             }
@@ -121,4 +123,30 @@ public class BookDAO {
         return book; // null if not found
     }
 
+    // Update all fields of a book (except bookId which is the primary key)
+    public void updateBook(Book book) {
+        String sql = "UPDATE books SET isbn = ?, book_title = ?, book_author = ?, publisher = ?, year_of_publication = ?, borrowCount = ?, image_url_m = ? WHERE bookId = ?";
+
+        try (Connection conn = DBHelper.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, book.getIsbn());
+            pstmt.setString(2, book.getTitle());
+            pstmt.setString(3, book.getAuthor());
+            pstmt.setString(4, book.getPublisher());
+            pstmt.setInt(5, book.getYearPublished());
+            pstmt.setInt(6, book.getBorrowCount());
+            pstmt.setString(7, book.getImgUrl());
+            pstmt.setString(8, book.getBookId());
+
+            int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated == 0) {
+                System.out.println("No book found with ID: " + book.getBookId());
+            } else {
+                System.out.println("Book with ID " + book.getBookId() + " has been updated.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -84,6 +84,10 @@ public class LibraryManager {
         }
     }
 
+    public void removeUser(String userId) {
+        userDAO.removeUser(userId);
+    }
+
     private String generateRecordId() {
         return "REC-" + UUID.randomUUID().toString().substring(0, 8);
     }
