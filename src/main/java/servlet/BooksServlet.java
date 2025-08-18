@@ -1,6 +1,9 @@
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 package servlet;
@@ -25,7 +28,10 @@ public class BooksServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         // Use singleton instance of LibraryService
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         libraryService = LibraryService.getInstance();
@@ -46,11 +52,14 @@ public class BooksServlet extends HttpServlet {
 
         try {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             String sort = request.getParameter("sort"); // optional, e.g., "asc" or "desc"
             List<BookDTO> books = libraryService.getAllBooks(); // get all books
 
             // Sort by borrowCount if requested
 =======
+=======
+>>>>>>> Stashed changes
             String sort = request.getParameter("sort"); // "asc" or "desc"
             String limitParam = request.getParameter("limit");
             int limit = 20;
@@ -60,6 +69,9 @@ public class BooksServlet extends HttpServlet {
 
             List<BookDTO> books = libraryService.getTopBooks(limit);
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
             if ("asc".equalsIgnoreCase(sort)) {
                 books.sort((b1, b2) -> Integer.compare(b1.getBorrowCount(), b2.getBorrowCount()));
@@ -78,16 +90,22 @@ public class BooksServlet extends HttpServlet {
         }
     }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Allow CORS preflight
 =======
+=======
+>>>>>>> Stashed changes
 
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
@@ -96,6 +114,9 @@ public class BooksServlet extends HttpServlet {
     }
 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes

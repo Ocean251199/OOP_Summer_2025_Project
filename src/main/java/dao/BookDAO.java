@@ -51,7 +51,10 @@ public class BookDAO {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     // Get top N books sorted by borrowCount descending
     public List<Book> getTopBooks(int limit) {
         List<Book> books = new ArrayList<>();
@@ -81,6 +84,9 @@ public class BookDAO {
         return books;
     }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     // Load all books from the database
     public List<Book> getAllBooks() {

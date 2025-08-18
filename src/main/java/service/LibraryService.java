@@ -1,6 +1,9 @@
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 package service;
@@ -69,7 +72,10 @@ public class LibraryService {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     // ---------------- User Listing ----------------
     public List<UserDTO> getAllUsers() {
         List<User> users = userDAO.getAllUsers(); // fetch all User domain objects from DAO
@@ -79,6 +85,9 @@ public class LibraryService {
     }
 
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     // ---------------- Book Management ----------------
     public boolean addBook(BookDTO bookDTO) {
@@ -109,7 +118,10 @@ public class LibraryService {
 
     // ---------------- Book Listing ----------------
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 
     // Get top N books
     public List<BookDTO> getTopBooks(int limit) {
@@ -119,6 +131,9 @@ public class LibraryService {
                     .collect(Collectors.toList());
     }
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     public List<BookDTO> getAllBooks() {
         List<Book> books = bookDAO.getAllBooks(); // fetch all Book domain objects from DAO
@@ -265,6 +280,9 @@ public class LibraryService {
     }
 }
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
