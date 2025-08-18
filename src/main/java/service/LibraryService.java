@@ -4,7 +4,7 @@ import dao.*;
 import dto.*;
 import model.*;
 import model.Record;
-import type.ActionType;
+import type.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -126,7 +126,7 @@ public class LibraryService {
         userDAO.updateUser(user);
 
         // Record the action
-        Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
+        model.Record record = new Record(generateRecordId(), userId, bookId, ActionType.RETURN);
         recordDAO.addRecord(record);
 
         return true;
@@ -140,33 +140,83 @@ public class LibraryService {
                   .collect(Collectors.toList());
     }
 
+
+
     // ---------------- ID Generation ----------------
     private String generateRecordId() {
         return "REC-" + UUID.randomUUID().toString().substring(0, 8);
     }
 
     // ---------------- Mapping ----------------
+    private UserDTO mapToDTO(User user) {
+        return new UserDTO(
+            user.getUserId(),
+            user.getEmail(),
+            user.getRole(),  // now the 3rd argument
+            new ArrayList<>(user.getBorrowedBookIds())  // 4th argument
+        );
+    }
+
     private User mapToDomain(UserDTO dto) {
-        User user = new User(dto.getUserId(), dto.getName());
-        user.getBorrowedBookIds().addAll(dto.getBorrowedBookIds());
+        // Choose subclass based on role
+        User user;
+        switch (dto.getRole().toUpperCase()) {
+            case "ADMIN":
+                user = new Admin(dto.getUserId(), dto.getEmail(), "TEMP_PASSWORD");  // default password
+                break;
+            default:
+                user = new Member(dto.getUserId(), dto.getEmail(), "TEMP_PASSWORD");
+                break;
+        }
+        // Copy borrowed books
+        if (dto.getBorrowedBookIds() != null) {
+            user.getBorrowedBookIds().addAll(dto.getBorrowedBookIds());
+        }
         return user;
     }
 
-    private UserDTO mapToDTO(User user) {
-        return new UserDTO(user.getUserId(), user.getName(), user.getBorrowedBookIds());
+    private BookDTO mapToDTO(Book book) {
+        return new BookDTO(
+            book.getBookId(),
+            book.getIsbn(),
+            book.getTitle(),
+            book.getAuthor(),
+            book.getPublisher(),
+            book.getYearPublished(),
+            book.getBorrowCount(),
+            book.getImgUrl()
+        );
     }
 
     private Book mapToDomain(BookDTO dto) {
-        Book book = new Book(dto.getBookId(), dto.getTitle(), dto.getAuthor());
-        book.setBorrowCount(dto.getBorrowCount());
-        return book;
-    }
-
-    private BookDTO mapToDTO(Book book) {
-        return new BookDTO(book.getBookId(), book.getTitle(), book.getAuthor(), book.getBorrowCount());
+        return new Book(
+            dto.getBookId(),
+            dto.getIsbn(),
+            dto.getTitle(),
+            dto.getAuthor(),
+            dto.getPublisher(),
+            dto.getYearPublished(),
+            dto.getBorrowCount(),
+            dto.getImgUrl()
+        );
     }
 
     private RecordDTO mapToDTO(Record record) {
-        return new RecordDTO(record.getRecordId(), record.getUserId(), record.getBookId(), record.getAction());
+        return new RecordDTO(
+            record.getRecordId(),
+            record.getTimestamp(),         // copy timestamp
+            record.getUserId(),
+            record.getBookId(),
+            record.getAction().name()      // convert enum to String
+        );
+    }
+
+    private Record mapToDomain(RecordDTO dto) {
+        return new Record(
+            dto.getRecordId(),
+            dto.getUserId(),
+            dto.getBookId(),
+            ActionType.valueOf(dto.getAction())  // convert String to enum
+        );
     }
 }
