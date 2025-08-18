@@ -40,4 +40,15 @@
     <servlet-name>AddBookServlet</servlet-name>
     <url-pattern>/api/books/add</url-pattern>
   </servlet-mapping>
+
+  <!-- Khai báo servlet trả sách -->
+  <servlet>
+    <servlet-name>ReturnBookServlet</servlet-name>
+    <servlet-class>ReturnBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReturnBookServlet</servlet-name>
+    <url-pattern>/api/books/return</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

@@ -2,7 +2,10 @@ import java.util.Arrays;
 
 import model.Book;
 
+// Kiểm thử thư viện
 public class LibTest {
+
+    // Phương thức chính
     public static void main(String[] args) {
         Book book = new Book(
             "B001",

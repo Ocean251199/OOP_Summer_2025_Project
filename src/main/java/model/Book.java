@@ -1,5 +1,6 @@
 package model;
 
+// Đại diện cho một cuốn sách trong thư viện
 public class Book {
     private String bookId;
     private String isbn;
