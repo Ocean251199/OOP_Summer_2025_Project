@@ -23,7 +23,7 @@
   <!-- FindBookServlet / BorrowBookServlet -->
   <servlet>
     <servlet-name>FindBookServlet</servlet-name>
-    <servlet-class>servlet.BorrowBookServlet</servlet-class>
+    <servlet-class>servlet.FindBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FindBookServlet</servlet-name>

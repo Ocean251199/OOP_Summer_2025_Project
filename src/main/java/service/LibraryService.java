@@ -184,6 +184,7 @@ public class LibraryService {
         return new UserDTO(
                 user.getUserId(),
                 user.getEmail(),
+                user.getPassword(), // include password in DTO
                 user.getRole(),
                 new ArrayList<>(user.getBorrowedBookIds())
         );
@@ -191,12 +192,13 @@ public class LibraryService {
 
     private User mapToDomain(UserDTO dto) {
         User user;
+        String password = dto.getPassword(); // get the real password from DTO
         switch (dto.getRole().toUpperCase()) {
             case "ADMIN":
-                user = new Admin(dto.getUserId(), dto.getEmail(), "TEMP_PASSWORD");
+                user = new Admin(dto.getUserId(), dto.getEmail(), password);
                 break;
             default:
-                user = new Member(dto.getUserId(), dto.getEmail(), "TEMP_PASSWORD");
+                user = new Member(dto.getUserId(), dto.getEmail(), password);
                 break;
         }
         if (dto.getBorrowedBookIds() != null) {
@@ -204,6 +206,7 @@ public class LibraryService {
         }
         return user;
     }
+
 
     private BookDTO mapToDTO(Book book) {
         return new BookDTO(

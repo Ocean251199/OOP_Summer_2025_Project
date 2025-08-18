@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đăng Nhập - MindCompanion</title>
+<title>Đăng Nhập</title>
 <link rel="icon" type="image/jpg" href="InkedGemini_Generated_Image_r9fh3ir9fh3ir9fh_LI.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -21,29 +21,7 @@
         box-sizing: border-box;
         overflow-y: auto;
     }
-    .sign {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-        z-index: 20;
-    }
-    .sign a {
-        color: #093149;
-        text-decoration: underline;
-        margin-left: 10px;
-        border: 1px #496679 solid;
-        border-radius: 20px;
-        padding: 8px 16px;
-        transition: transform 0.3s ease;
-    }
-    .sign a:hover {
-        background-color: #496679;
-        box-shadow: 0 8px 20px rgba(82, 95, 104, 0.605); 
-        border-color: #093149;
-    }
+
     .login-screen {
         margin-top: 60px;
         margin-bottom: 30px;
@@ -55,55 +33,73 @@
         text-align: center;
         max-width: 450px;
         width: 100%;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInSlideUp 1s forwards ease-out;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-sizing: border-box;
     }
-    @keyframes fadeInSlideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+
     .login-screen img {
         max-width: 120px;
         height: auto;
         margin-bottom: 25px;
         border-radius: 50%;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         border: 4px solid #f1faee;
     }
-    .login-screen h1 { font-size: 2.5em; color: #1d3557; margin-bottom: 20px; }
-    .login-form { display: flex; flex-direction: column; gap: 20px; margin-bottom: 30px; }
-    .form-group { display: flex; flex-direction: column; text-align: left; }
-    .form-group label { font-size: 1em; color: #1d3557; margin-bottom: 8px; font-weight: 600; }
+
+    .login-screen h1 {
+        font-size: 2.5em;
+        color: #1d3557;
+        margin-bottom: 20px;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #1d3557;
+        display: block;
+    }
+
     .form-group input {
-        padding: 12px; font-size: 1em; border: 1px solid #ccc; border-radius: 5px;
-        font-family: 'Inter', sans-serif; transition: border-color 0.3s ease;
+        padding: 12px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1em;
     }
-    .form-group input:focus { outline: none; border-color: #457b9d; box-shadow: 0 0 5px rgba(69,123,157,0.3); }
+
     .login-button {
-        background-color: #457b9d; color: #fff; border: none; border-radius: 5px;
-        padding: 12px 20px; font-size: 1.1em; cursor: pointer; transition: background-color 0.3s ease;
+        padding: 12px;
+        background: #457b9d;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1.1em;
     }
-    .login-button:hover { background-color: #1d3557; }
-    .register-prompt { font-size: 0.9em; color: #457b9d; }
-    .register-prompt a { color: #1d3557; text-decoration: underline; cursor: pointer; }
+
+    .login-button:hover {
+        background: #1d3557;
+    }
+
+    .register-prompt a {
+        color: #1d3557;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
-
-<div class="sign">
-    <a onclick="goToRegister()">Đăng Ký</a>
-</div>
 
 <div class="login-screen">
     <img src="Gemini_Generated_Image_6s5iy16s5iy16s5i.png" alt="LM Logo">
     <h1>Đăng Nhập</h1>
     <form class="login-form" onsubmit="handleLogin(event)">
         <div class="form-group">
-            <label for="username">Email</label>
-            <input type="text" id="username" placeholder="Nhập email" required>
+            <label for="email">Email</label>
+            <input type="text" id="email" placeholder="Nhập email" required>
         </div>
         <div class="form-group">
             <label for="password">Mật khẩu</label>
@@ -112,39 +108,35 @@
         <button type="submit" class="login-button">Đăng Nhập</button>
     </form>
     <div class="register-prompt">
-        Chưa có tài khoản? <a onclick="goToRegister()">Đăng ký ngay</a>
+        Chưa có tài khoản? <a href="Register.html">Đăng ký ngay</a>
     </div>
 </div>
 
 <script>
-function handleLogin(event) {
+async function handleLogin(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Example: simple frontend check
-    if(username && password) {
-        alert('Đăng nhập thành công! Chuyển hướng đến trang chính...');
-        window.location.href = 'Books.html'; // change to your main page
-    } else {
-        alert('Vui lòng điền đầy đủ thông tin.');
+    try {
+        const response = await fetch('/btl/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+        });
+
+        const result = await response.json();
+
+        if(result.success){
+            alert(result.message);
+            window.location.href = 'Index.html';
+        } else {
+            alert(result.message);
+        }
+    } catch(err){
+        alert('Lỗi kết nối: ' + err.message);
     }
 }
-
-function goToRegister() {
-    document.querySelector('.login-screen').style.transform = 'translateX(-100%)';
-    document.querySelector('.login-screen').style.opacity = '0';
-    setTimeout(() => {
-        window.location.href = 'Register.html'; // Redirect to correct register page
-    }, 500);
-}
-
-// Add animation delay on page load
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        document.querySelector('.login-screen').style.animationDelay = '0.3s';
-    }, 100);
-});
 </script>
 
 </body>

@@ -7,10 +7,10 @@
 
   <!-- Welcome file -->
   <welcome-file-list>
-    <welcome-file>Index.html</welcome-file>
+    <welcome-file>LogIn.html</welcome-file>
   </welcome-file-list>
 
-  <!-- Khai báo servlet lấy danh sách sách -->
+  <!-- BooksServlet: get list of books -->
   <servlet>
     <servlet-name>BooksServlet</servlet-name>
     <servlet-class>servlet.BooksServlet</servlet-class>
@@ -19,19 +19,18 @@
     <servlet-name>BooksServlet</servlet-name>
     <url-pattern>/api/books</url-pattern>
   </servlet-mapping>
-  
-  <!-- Khai báo servlet mượn sách -->
-  <servlet>
-    <servlet-name>BorrowBookServlet</servlet-name>
-    <servlet-class>servlet.BorrowBookServlet</servlet-class>
-  </servlet>
 
+  <!-- FindBookServlet / BorrowBookServlet -->
+  <servlet>
+    <servlet-name>FindBookServlet</servlet-name>
+    <servlet-class>servlet.FindBookServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
-    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-name>FindBookServlet</servlet-name>
     <url-pattern>/api/books/borrow</url-pattern>
   </servlet-mapping>
 
-  <!-- Khai báo servlet thêm sách -->
+  <!-- AddBookServlet -->
   <servlet>
     <servlet-name>AddBookServlet</servlet-name>
     <servlet-class>servlet.AddBookServlet</servlet-class>
@@ -41,7 +40,7 @@
     <url-pattern>/api/books/add</url-pattern>
   </servlet-mapping>
 
-  <!-- Khai báo servlet trả sách -->
+  <!-- ReturnBookServlet -->
   <servlet>
     <servlet-name>ReturnBookServlet</servlet-name>
     <servlet-class>servlet.ReturnBookServlet</servlet-class>
@@ -50,5 +49,25 @@
     <servlet-name>ReturnBookServlet</servlet-name>
     <url-pattern>/api/books/return</url-pattern>
   </servlet-mapping>
-  
+
+  <!-- RegisterServlet -->
+  <servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>servlet.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/api/register</url-pattern>
+  </servlet-mapping>
+
+  <!-- LoginServlet -->
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/api/login</url-pattern>
+  </servlet-mapping>
+
 </web-app>

@@ -30,12 +30,13 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // Create UserDTO
+        // Create UserDTO with password
         UserDTO userDTO = new UserDTO(
                 "USER-" + UUID.randomUUID().toString().substring(0, 8),
                 email,
+                password,       // <-- include the password here
                 "MEMBER",
-                null // borrowedBookIds empty initially
+                null            // borrowedBookIds empty initially
         );
 
         boolean success = libraryService.registerUser(userDTO);

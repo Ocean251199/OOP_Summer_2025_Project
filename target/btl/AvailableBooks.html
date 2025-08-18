@@ -51,6 +51,7 @@
         <tr>
             <th>Hình ảnh</th>
             <th>Tiêu đề</th>
+            <th>Mã ISBN</th>
             <th>Tác giả</th>
             <th>Nhà xuất bản</th>
             <th>Năm xuất bản</th>
@@ -99,12 +100,13 @@ async function loadBooks(limit=20) {
 function renderBooks(books){
     const tbody = document.getElementById('books-table-body');
     if(books.length === 0){
-        tbody.innerHTML = '<tr><td colspan="7" class="no-books">Không có sách nào</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="no-books">Không có sách nào</td></tr>';
     } else {
         tbody.innerHTML = books.map(book => `
             <tr>
                 <td><img src="${book.imgUrl}" alt="${book.title}"></td>
                 <td>${book.title}</td>
+                <td>${book.isbn}</td>
                 <td>${book.author}</td>
                 <td>${book.publisher}</td>
                 <td>${book.yearPublished}</td>
