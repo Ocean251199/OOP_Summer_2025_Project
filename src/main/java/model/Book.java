@@ -83,6 +83,10 @@ public class Book {
         this.borrowCount++;
     }
 
+    public void decrementBorrowCount() {
+        this.borrowCount--;
+    }
+
     public String getImgUrl() {
         return imgUrl;
     }
