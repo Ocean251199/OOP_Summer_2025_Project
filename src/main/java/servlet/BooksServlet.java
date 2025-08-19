@@ -34,14 +34,32 @@ public class BooksServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            String sort = request.getParameter("sort"); // "asc" or "desc"
+            HttpSession session = request.getSession(false);
+            String type = request.getParameter("type"); // check if "borrowed"
+            String sort = request.getParameter("sort");
             String limitParam = request.getParameter("limit");
-            int limit = 20; // default Top 20
+            int limit = 20;
             if (limitParam != null) {
                 try { limit = Integer.parseInt(limitParam); } catch (NumberFormatException ignored) {}
             }
 
-            List<BookDTO> books = libraryService.getTopBooks(limit);
+            List<BookDTO> books;
+
+            if ("borrowed".equalsIgnoreCase(type)) {
+                // Must be logged in
+                if (session == null || session.getAttribute("userId") == null) {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write(objectMapper.writeValueAsString(
+                            ApiResponse.error("Bạn chưa đăng nhập")
+                    ));
+                    return;
+                }
+                String userId = (String) session.getAttribute("userId");
+                books = libraryService.getBorrowedBooksByUser(userId);
+            } else {
+                // Top books or all books
+                books = libraryService.getTopBooks(limit);
+            }
 
             if ("asc".equalsIgnoreCase(sort)) {
                 books.sort((b1, b2) -> Integer.compare(b1.getBorrowCount(), b2.getBorrowCount()));
@@ -70,7 +88,7 @@ public class BooksServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             response.getWriter().write(objectMapper.writeValueAsString(
-                    ApiResponse.error("User not logged in.")
+                    ApiResponse.error("Bạn chưa đăng nhập")
             ));
             return;
         }

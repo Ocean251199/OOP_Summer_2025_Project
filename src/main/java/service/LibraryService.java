@@ -71,6 +71,17 @@ public class LibraryService {
                     .collect(Collectors.toList());
     }
 
+    public List<BookDTO> getBorrowedBooksByUser(String userId) {
+        User user = userDAO.getUserById(userId);
+        if (user == null) return new ArrayList<>();
+
+        return user.getBorrowedBookIds().stream()
+                .map(bookDAO::getBookById) // returns Book object
+                .filter(book -> book != null)
+                .map(this::mapToDTO)       // convert to BookDTO
+                .collect(Collectors.toList());
+    }
+
     // ---------------- Book Management ----------------
     public boolean addBook(BookDTO bookDTO) {
         try {

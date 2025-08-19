@@ -19,16 +19,15 @@
         }
 
         .header {
-            margin-top: 0px;
             width: 100%;
             height: 20%;
             padding: 20px 0;
             background: #457b9d; 
-            position: relative;
-            margin-bottom: 0;
-            justify-content: center;
+            display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
+            margin-bottom: 0;
         }
 
         .header h1 {
@@ -36,85 +35,28 @@
             margin: 0;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .header-bottom {
             display: flex;
-            flex-direction: row;
-            gap: 500px;
-            margin-left: 220px;
-            margin-top: -75px;
+            align-items: center;
+        }
+
+        .header h1 img {
+            width: 150px;
+            height: 150px;
+            margin-right: 20px;
         }
 
         .header-bottom h2 {
             font-size: 1.5em;
             color: #fff;
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-        }
-
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1em;
-            outline: none;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-input::placeholder {
-            color: #666;
-        }
-
-        .search-filter {
-            padding: 12px 15px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1em;
-            outline: none;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-        }
-
-        .search-btn {
-            background-color: #1d3557;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .search-btn:hover {
-            background-color: #457b9d;
-        }
-
-        .search-results-info {
-            text-align: center;
-            margin: 10px 0;
-            color: #457b9d;
-            font-weight: 600;
-        }
-
-        .header img {
-            width: 150px;
-            height: 150px;
-            vertical-align: middle;
-            margin-right: 50px;
-            margin-top: 5px;
-            margin-left: 10px;
+            margin-left: 220px;
+            margin-top: -75px;
         }
 
         .directory {
-            height: 100%; 
             width: 13%;
             background: #457b9d;
+            height: 100%;
         }
 
         .directory h1 {
@@ -149,9 +91,7 @@
 
         .main-content {
             display: flex;
-            flex: 1;
-            position: relative;
-            height: 150%;
+            height: 100%;
         }
 
         .content-area {
@@ -197,7 +137,6 @@
             font-weight: 700;
             color: #1d3557;
             margin-bottom: 10px;
-        
         }
 
         .book-info {
@@ -240,38 +179,25 @@
             cursor: not-allowed;
         }
 
-        .loading {
+        .loading, .error, .no-books {
             text-align: center;
             padding: 40px;
             font-size: 1.2em;
-            color: #457b9d;
         }
 
-        .error {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #721c24;
-            background-color: #f8d7da;
-            border-radius: 10px;
-            margin: 20px;
-        }
-
-        .no-books {
-            text-align: center;
-            padding: 40px;
-            font-size: 1.2em;
-            color: #457b9d;
-        }
+        .loading { color: #457b9d; }
+        .error { color: #721c24; background-color: #f8d7da; border-radius: 10px; margin: 20px; }
+        .no-books { color: #457b9d; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1><img src="sachdamuon.png" alt="Borrowed Books Logo"> Library Manage App</h1> 
+        <h1><img src="sachdamuon.png" alt="Borrowed Books Logo">Library Manage App</h1> 
         <div class="header-bottom">
             <h2>Sách Đã Mượn</h2>
         </div>
     </div>
+
     <div class="main-content">
         <div class="directory">
             <h1>Thư Mục</h1>
@@ -281,6 +207,7 @@
                 <li><a href="Index.html">Trang Chủ</a></li>
             </ul>
         </div>
+
         <div class="content-area">
             <div class="books-container">
                 <div id="loading" class="loading">Đang tải...</div>
@@ -293,57 +220,59 @@
     <script>
         async function loadBorrowedBooks() {
             const loadingDiv = document.getElementById('loading');
-        const errorDiv = document.getElementById('error');
-        const booksGrid = document.getElementById('books-grid');
+            const errorDiv = document.getElementById('error');
+            const booksGrid = document.getElementById('books-grid');
 
-        loadingDiv.style.display = 'block';
-        errorDiv.style.display = 'none';
-        booksGrid.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            errorDiv.style.display = 'none';
+            booksGrid.style.display = 'none';
 
-        try {
-            const response = await fetch('/btl/api/books?type=borrowed');
-            const result = await response.json();
+            try {
+                const response = await fetch('/btl/api/books?type=borrowed');
+                const result = await response.json();
 
-            loadingDiv.style.display = 'none';
-            if (result.success && Array.isArray(result.data)) {
-                allBooks = result.data;
-                renderBooks(allBooks);
-            } else {
-                errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu.';
+                loadingDiv.style.display = 'none';
+
+                if (result.success && Array.isArray(result.data)) {
+                    const allBooks = result.data;
+                    renderBooks(allBooks);
+                } else {
+                    errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu.';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
                 errorDiv.style.display = 'block';
             }
-        } catch (error) {
-            loadingDiv.style.display = 'none';
-            errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
-            errorDiv.style.display = 'block';
         }
-    }
 
-    function renderBooks(books) {
-        const booksGrid = document.getElementById('books-grid');
-        if (books.length === 0) {
-            booksGrid.innerHTML = '<div class="no-books">Không có sách nào chưa được mượn.</div>';
-        } else {
-            booksGrid.innerHTML = books.map(book => `
-                <div class="book-card" data-book-id="${book.bookId}">
-                    <img src="${book.imgUrl}" alt="${book.title}" />
-                    <div class="book-title">${book.title}</div>
-                    <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
-                    <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
-                    <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
-                    <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
-                    <div>
-                        ${book.genres ? book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('') : ''}
+        function renderBooks(books) {
+            const booksGrid = document.getElementById('books-grid');
+
+            if (!books || books.length === 0) {
+                booksGrid.innerHTML = '<div class="no-books">Không có sách nào đã mượn.</div>';
+            } else {
+                booksGrid.innerHTML = books.map(book => `
+                    <div class="book-card" data-book-id="${book.bookId}">
+                        <img src="${book.imgUrl}" alt="${book.title}" />
+                        <div class="book-title">${book.title}</div>
+                        <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
+                        <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
+                        <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
+                        <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
+                        <div>
+                            ${book.genres?.map(g => `<span class="book-genres">${g}</span>`).join('') || ''}
+                        </div>
+                        <div class="book-actions">
+                            <button class="return-btn" onclick="returnBook(event, '${book.bookId}')"> ➖ Trả sách</button>
+                        </div>
                     </div>
-                    <div class="book-actions">
-                        <button class="borrow-btn" onclick="borrowBook(event, '${book.bookId}')"> ➖ Trả sách</button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
+
+            booksGrid.style.display = 'grid';
         }
-        booksGrid.style.display = 'grid';
-    }
-
 
         async function returnBook(event, bookId) {
             const button = event.target;
@@ -351,18 +280,12 @@
             button.textContent = '...';
 
             try {
-                const data = {
-                    userId: 'U001',
-                    bookId: bookId
-                };
-                
-                const response = await fetch('/btl/api/books/return', { 
+                const response = await fetch('/btl/api/books/return', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ bookId }) // server uses session for userId
                 });
+
                 const result = await response.json();
 
                 if (result.success) {
@@ -375,11 +298,10 @@
                 alert('Lỗi kết nối: ' + error.message);
             } finally {
                 button.disabled = false;
-                button.textContent = '➖';
+                button.textContent = ' ➖ Trả sách';
             }
         }
 
-        // Load books when page loads
         document.addEventListener('DOMContentLoaded', loadBorrowedBooks);
     </script>
 </body>

@@ -22,11 +22,11 @@
 
   <!-- FindBookServlet / BorrowBookServlet -->
   <servlet>
-    <servlet-name>FindBookServlet</servlet-name>
-    <servlet-class>servlet.FindBookServlet</servlet-class>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-class>servlet.BorrowBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>FindBookServlet</servlet-name>
+    <servlet-name>BorrowBookServlet</servlet-name>
     <url-pattern>/api/books/borrow</url-pattern>
   </servlet-mapping>
 

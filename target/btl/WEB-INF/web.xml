@@ -1,0 +1,73 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Library Management System</display-name>
+
+  <!-- Welcome file -->
+  <welcome-file-list>
+    <welcome-file>Index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- BooksServlet: get list of books -->
+  <servlet>
+    <servlet-name>BooksServlet</servlet-name>
+    <servlet-class>servlet.BooksServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BooksServlet</servlet-name>
+    <url-pattern>/api/books</url-pattern>
+  </servlet-mapping>
+
+  <!-- FindBookServlet / BorrowBookServlet -->
+  <servlet>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-class>servlet.BorrowBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <url-pattern>/api/books/borrow</url-pattern>
+  </servlet-mapping>
+
+  <!-- AddBookServlet -->
+  <servlet>
+    <servlet-name>AddBookServlet</servlet-name>
+    <servlet-class>servlet.AddBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddBookServlet</servlet-name>
+    <url-pattern>/api/books/add</url-pattern>
+  </servlet-mapping>
+
+  <!-- ReturnBookServlet -->
+  <servlet>
+    <servlet-name>ReturnBookServlet</servlet-name>
+    <servlet-class>servlet.ReturnBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReturnBookServlet</servlet-name>
+    <url-pattern>/api/books/return</url-pattern>
+  </servlet-mapping>
+
+  <!-- RegisterServlet -->
+  <servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>servlet.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/api/register</url-pattern>
+  </servlet-mapping>
+
+  <!-- LoginServlet -->
+  <servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>servlet.LoginServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/api/login</url-pattern>
+  </servlet-mapping>
+
+</web-app>

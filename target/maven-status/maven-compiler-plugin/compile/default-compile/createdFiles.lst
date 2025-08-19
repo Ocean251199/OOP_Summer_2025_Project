@@ -2,8 +2,11 @@ servlet\LogoutServlet.class
 dto\RecordDTO.class
 servlet\BooksServlet.class
 dto\UserDTO.class
+servlet\SearchBooksServlet.class
 model\Record.class
 model\Member.class
+servlet\BorrowBookServlet.class
+servlet\ReturnBookServlet$1Payload.class
 servlet\LoginServlet.class
 type\ActionType.class
 servlet\ReturnBookServlet.class
@@ -15,8 +18,6 @@ service\DBHelper.class
 dao\UserDAO$1.class
 dto\ApiResponse.class
 dao\BookDAO.class
-servlet\FindBookServlet.class
-servlet\FindBookServlet$BorrowRequest.class
 servlet\AddBookServlet.class
 model\Book.class
 servlet\RegisterServlet.class

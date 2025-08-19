@@ -33,44 +33,48 @@ public class ReturnBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            // Get userId from session (must be logged in)
+            // Get userId from session
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute("userId") == null) {
-                ApiResponse<Object> errorResponse = ApiResponse.error("Bạn chưa đăng nhập");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+                response.getWriter().write(objectMapper.writeValueAsString(
+                        ApiResponse.error("Bạn chưa đăng nhập")
+                ));
                 return;
             }
-
             String userId = (String) session.getAttribute("userId");
 
-            // Get bookId from URL-encoded form
-            String bookId = request.getParameter("bookId");
-            if (bookId == null || bookId.trim().isEmpty()) {
-                ApiResponse<Object> errorResponse = ApiResponse.error("Book ID là bắt buộc");
+            // Parse JSON from request body
+            class Payload { public String bookId; }
+            Payload payload = objectMapper.readValue(request.getInputStream(), Payload.class);
+
+            if (payload.bookId == null || payload.bookId.trim().isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+                response.getWriter().write(objectMapper.writeValueAsString(
+                        ApiResponse.error("Book ID là bắt buộc")
+                ));
                 return;
             }
 
-            boolean success = libraryService.returnBook(userId, bookId);
+            boolean success = libraryService.returnBook(userId, payload.bookId);
 
             if (success) {
-                ApiResponse<Object> successResponse = ApiResponse.success("Trả sách thành công", null);
                 response.setStatus(HttpServletResponse.SC_OK);
-                response.getWriter().write(objectMapper.writeValueAsString(successResponse));
+                response.getWriter().write(objectMapper.writeValueAsString(
+                        ApiResponse.success("Trả sách thành công", null)
+                ));
             } else {
-                ApiResponse<Object> errorResponse = ApiResponse.error(
-                    "Không thể trả sách. Có thể sách chưa được mượn hoặc user/book không tồn tại."
-                );
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+                response.getWriter().write(objectMapper.writeValueAsString(
+                        ApiResponse.error("Không thể trả sách. Có thể sách chưa được mượn hoặc user/book không tồn tại.")
+                ));
             }
 
         } catch (Exception e) {
-            ApiResponse<Object> errorResponse = ApiResponse.error("Lỗi server: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+            response.getWriter().write(objectMapper.writeValueAsString(
+                    ApiResponse.error("Lỗi server: " + e.getMessage())
+            ));
         }
     }
 
