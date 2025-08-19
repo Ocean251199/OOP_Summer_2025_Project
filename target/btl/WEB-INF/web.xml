@@ -70,4 +70,14 @@
     <url-pattern>/api/login</url-pattern>
   </servlet-mapping>
 
+    <!-- SearchBooksServlet -->
+  <servlet>
+    <servlet-name>SearchBooksServlet</servlet-name>
+    <servlet-class>servlet.SearchBooksServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchBooksServlet</servlet-name>
+    <url-pattern>/api/books/search</url-pattern>
+  </servlet-mapping>
+
 </web-app>
