@@ -1,5 +1,9 @@
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Admin.java
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\SearchBooksServlet.java
+>>>>>>> Stashed changes
 =======
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\SearchBooksServlet.java
 >>>>>>> Stashed changes
@@ -12,6 +16,11 @@ D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Book.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\type\ActionType.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\service\DBHelper.java
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\LogoutServlet.java
+D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\BorrowBookServlet.java
+>>>>>>> Stashed changes
 =======
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\LogoutServlet.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\BorrowBookServlet.java
@@ -24,7 +33,10 @@ D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\LoginServlet.ja
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Member.java
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\model\Record.java
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\servlet\FindBookServlet.java
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 D:\CNTT_Shared\OOP\OOP_Summer_2025_Project\src\main\java\dao\UserDAO.java

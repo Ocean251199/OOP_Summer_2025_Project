@@ -8,7 +8,11 @@
   <!-- Welcome file -->
   <welcome-file-list>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <welcome-file>LogIn.html</welcome-file>
+=======
+    <welcome-file>Index.html</welcome-file>
+>>>>>>> Stashed changes
 =======
     <welcome-file>Index.html</welcome-file>
 >>>>>>> Stashed changes
@@ -27,17 +31,23 @@
   <!-- FindBookServlet / BorrowBookServlet -->
   <servlet>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     <servlet-name>FindBookServlet</servlet-name>
     <servlet-class>servlet.FindBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FindBookServlet</servlet-name>
 =======
+=======
+>>>>>>> Stashed changes
     <servlet-name>BorrowBookServlet</servlet-name>
     <servlet-class>servlet.BorrowBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>BorrowBookServlet</servlet-name>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     <url-pattern>/api/books/borrow</url-pattern>
   </servlet-mapping>
@@ -83,7 +93,10 @@
   </servlet-mapping>
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
   <!-- SearchBooksServlet -->
   <servlet>
     <servlet-name>SearchBooksServlet</servlet-name>
@@ -94,5 +107,8 @@
     <url-pattern>/api/books/search</url-pattern>
   </servlet-mapping>
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 </web-app>
