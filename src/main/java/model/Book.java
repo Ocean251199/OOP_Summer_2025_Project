@@ -1,0 +1,113 @@
+package model;
+
+// Đại diện cho một cuốn sách trong thư viện
+public class Book {
+    private String bookId;
+    private String isbn;
+    private String title;
+    private String author;
+    private String publisher;
+    private int yearPublished;
+    private int borrowCount;
+    private String imgUrl; // maps to image_url_m
+
+    // Constructor
+    public Book(String bookId, String isbn, String title, String author, String publisher, int yearPublished, int borrowCount, String imgUrl) {
+        this.bookId = bookId;
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.yearPublished = yearPublished;
+        this.borrowCount = borrowCount;
+        this.imgUrl = imgUrl;
+    }
+
+    // Getters and Setters
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public int getYearPublished() {
+        return yearPublished;
+    }
+
+    public void setYearPublished(int yearPublished) {
+        this.yearPublished = yearPublished;
+    }
+
+    public int getBorrowCount() {
+        return borrowCount;
+    }
+
+    public void setBorrowCount(int borrowCount) {
+        this.borrowCount = borrowCount;
+    }
+
+    public void incrementBorrowCount() {
+        this.borrowCount++;
+    }
+
+    public void decrementBorrowCount() {
+        this.borrowCount--;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    // Optional: toString for debugging
+    @Override
+    public String toString() {
+        return "Book{" +
+                "bookId='" + bookId + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", yearPublished=" + yearPublished +
+                ", borrowCount=" + borrowCount +
+                ", imgUrl='" + imgUrl + '\'' +
+                '}';
+    }
+}

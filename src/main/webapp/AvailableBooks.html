@@ -31,36 +31,6 @@
             align-items: center;
         }
 
-        .user-status {
-            position: absolute;
-            top: 20px;
-            right: 100px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #fff;
-        }
-
-        .user-status a, .user-status button {
-            color: #fff;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: background-color 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .user-status a:hover, .user-status button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-        }
-
-        #usernameDisplay {
-            font-weight: 600;
-        }
-
         .header h1 {
             font-size: 2em;
             margin: 0;
@@ -235,31 +205,20 @@
             margin-bottom: 5px;
         }
 
-        .book-genres {
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 15px;
-            padding: 5px 10px;
-            display: inline-block;
-            margin: 5px 5px 5px 0;
-            font-size: 0.9em;
-        }
-
         .book-actions {
             margin-top: 15px;
             justify-content: center;
-            display: flex; 
-            gap: 5px;
-            align-items: center;
         }
 
         .borrow-btn {
             background-color: #1d3557;
             color: white;
             border: none;
-            margin-top: 8px;
+            padding: 8px 16px;
             border-radius: 100px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            display: block;
             margin: 0 auto;
         }
 
@@ -268,26 +227,6 @@
         }
 
         .borrow-btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        .delete-btn {
-            background-color: #1d3557;
-            color: white;
-            border: none;
-            margin-top: 8px;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin: 0 auto;
-        }
-
-        .delete-btn:hover {
-            background-color: #457b9d;
-        }
-
-        .delete-btn:disabled {
             background-color: #ccc;
             cursor: not-allowed;
         }
@@ -319,11 +258,6 @@
 </head>
 <body>
     <div class="header">
-        <div class="user-status">
-            <span id="usernameDisplay" style="display:none;"></span>
-            <a id="authLink" href="#">Đăng nhập</a>
-            <button id="logoutBtn" style="display:none;" onclick="handleLogout()">Đăng Xuất</button>
-        </div>
         <h1><img src="sachchuamuon.png" alt="Available Books Logo"> Library Manage App</h1>
         <div class="header-bottom">
             <h2>Sách trong kho</h2>
@@ -366,267 +300,124 @@
     </div>
 
     <script>
-        const booksGrid = document.getElementById('books-grid');
+    let allBooks = [];
+
+    async function loadAvailableBooks() {
         const loadingDiv = document.getElementById('loading');
-        const errorDiv = document.getElementById('error-message');
+        const errorDiv = document.getElementById('error');
+        const booksGrid = document.getElementById('books-grid');
 
+        loadingDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+        booksGrid.style.display = 'none';
 
-        function checkLoginState() {
-            const userId = localStorage.getItem('loggedInUserId');
-            const authLink = document.getElementById('authLink');
-            const logoutBtn = document.getElementById('logoutBtn');
+        try {
+            const response = await fetch('/btl/api/books?type=available');
+            const result = await response.json();
 
-            if (userId) {
-                authLink.textContent = userId;
-                authLink.href = '#'; 
-                logoutBtn.style.display = 'block';
+            loadingDiv.style.display = 'none';
+            if (result.success && Array.isArray(result.data)) {
+                allBooks = result.data;
+                renderBooks(allBooks);
             } else {
-                authLink.textContent = 'Đăng nhập';
-                authLink.href = 'SignInScreen.html';
-                logoutBtn.style.display = 'none';
-            }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('loggedInUserId');
-            alert('Đã đăng xuất thành công!');
-            window.location.reload(); 
-        }
-
-        async function loadAvailableBooks() {
-            const loadingDiv = document.getElementById('loading');
-            const errorDiv = document.getElementById('error');
-            const booksGrid = document.getElementById('books-grid');
-
-            try {
-                const response = await fetch('/btl/api/books?type=available', {
-                    method: 'GET'
-                });
-                const result = await response.json();
-
-                loadingDiv.style.display = 'none';
-
-                if (result.success) {
-                    const books = result.data;
-                    
-                    if (books.length === 0) {
-                        booksGrid.innerHTML = '<div class="no-books">Không có sách nào chưa được mượn</div>';
-                    } else {
-                        booksGrid.innerHTML = books.map(book => `
-                            <div class="book-card"
-                                data-book-id="${book.bookId}"
-                                data-title="${book.title}"
-                                data-author="${book.author}"
-                                data-publisher="${book.publisher}"
-                                data-year="${book.yearPublished}"
-                                data-genres='${JSON.stringify(book.genres)}'
-                                data-borrow-count="${book.borrowCount}">
-
-                                <div class="book-info"><strong></strong> <img src="${book.imgUrl}" alt="${book.imgUrl}" /></div>
-                                <div class="book-info"><strong>Id:</strong>${book.bookId}</div>
-                                <div class="book-title"><strong>Tên sách:</strong> ${book.title}</div>
-                                <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
-                                <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
-                                <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
-                                <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
-                                <div>
-                                    ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
-                                </div>
-                                <div class="book-actions">
-                                        <button class="borrow-btn" onclick="borrowBook(event, '${book.bookId}')">➕</button>
-                                        <button class="delete-btn" onclick="deleteBook(event, '${book.bookId}')">🗑️</button>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                    
-                    booksGrid.style.display = 'grid';
-                } else {
-                    errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu';
-                    errorDiv.style.display = 'block';
-                }
-            } catch (error) {
-                loadingDiv.style.display = 'none';
-                errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
+                errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu.';
                 errorDiv.style.display = 'block';
             }
+        } catch (error) {
+            loadingDiv.style.display = 'none';
+            errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
+            errorDiv.style.display = 'block';
         }
+    }
 
-        function getBookDataFromCard(element) {
-            const card = element.closest('.book-card');
-            return {
-                bookId: card.dataset.bookId,
+    function renderBooks(books) {
+        const booksGrid = document.getElementById('books-grid');
+        if (books.length === 0) {
+            booksGrid.innerHTML = '<div class="no-books">Không có sách nào chưa được mượn.</div>';
+        } else {
+            booksGrid.innerHTML = books.map(book => `
+                <div class="book-card" data-book-id="${book.bookId}">
+                    <img src="${book.imgUrl}" alt="${book.title}" />
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
+                    <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
+                    <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
+                    <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
+                    <div class="book-actions">
+                        <button class="borrow-btn" onclick="borrowBook(event, '${book.bookId}')">➕ Mượn sách</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        booksGrid.style.display = 'grid';
+    }
+
+    async function borrowBook(event, bookId) {
+        const button = event.target;
+        button.disabled = true;
+        button.textContent = '...';
+
+        try {
+            const data = {
+                userId: 'U001',
+                bookId: bookId
             };
-        }
-        
-        async function borrowBook(event, bookId) {
-            console.log('=== BORROW DEBUG ===');
-            console.log('BookId:', bookId);
+            const response = await fetch('/btl/api/books/borrow', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
 
-            const button = event.target;
-            button.disabled = true; 
-            button.textContent = '...'; 
-            const userId = localStorage.getItem('loggedInUserId');
-            if (!userId) {
-                alert('Vui lòng đăng nhập để thực hiện chức năng này.');
-                button.disabled = false;
-                button.textContent = '➖';
-                window.location.href = 'SignInScreen.html'; 
-                return;
-            }
-            try {
-                const data = {
-                    userId: userId,
-                    bookId: bookId
-                };
-                const response = await fetch('/btl/api/books/borrow', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body:  JSON.stringify(data)
-                });
+            const result = await response.json();
 
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('✅ ' + result.message);
-                    loadAvailableBooks(); 
-                } else {
-                    alert('❌ ' + result.message);
-                }
-            } catch (error) {
-                alert('❌ Lỗi kết nối: ' + error.message);
-            } finally {
-                button.disabled = false;
-                button.textContent = '➕';
-            }
-        }
-        
-        async function deleteBook(event, bookId) {
-            console.log('=== DELETE DEBUG ===');
-            console.log('BookId:', bookId);
-
-            const button = event.target;
-            button.disabled = true; 
-            button.textContent = '...'; 
-            const userId = localStorage.getItem('loggedInUserId');
-            if (!userId) {
-                alert('Vui lòng đăng nhập để thực hiện chức năng này.');
-                button.disabled = false;
-                button.textContent = '➕';
-                window.location.href = 'SignInScreen.html'; 
-                return;
-            }
-            try {
-                const response = await fetch('/btl/api/books/delete', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ bookId: bookId })
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    alert('✅ ' + result.message);
-                    loadAvailableBooks(); 
-                } else {
-                    alert('❌ ' + result.message);
-                }
-            } catch (error) {
-                alert('❌ Lỗi kết nối: ' + error.message);
-            } finally {
-                button.disabled = false;
-                button.textContent = '🗑️';
-            }
-        }
-
-        async function searchBooks() {
-            const searchInput = document.getElementById('searchInput').value.trim();
-            const searchFilter = document.getElementById('searchFilter').value;
-
-            if (!searchInput && searchFilter !== 'all') {
-                alert('Vui lòng nhập từ khóa tìm kiếm.');
-                return;
-            }
-
-            const loadingDiv = document.getElementById('loading');
-            const errorDiv = document.getElementById('error');
-            const booksGrid = document.getElementById('books-grid');
-
-            loadingDiv.style.display = 'block';
-            errorDiv.style.display = 'none';
-            booksGrid.style.display = 'none';
-
-            let apiUrl = '';
-            
-            if (searchFilter === 'all' && !searchInput) {
-                 apiUrl = `/btl/api/books?type=available`;
-            } else if (searchFilter === 'genre') {
-                apiUrl = `/btl/api/books?type=available&genre=${encodeURIComponent(searchInput)}`;
+            if (result.success) {
+                alert('✅ ' + result.message);
+                loadAvailableBooks();
             } else {
-                apiUrl = `/btl/api/books/search?query=${encodeURIComponent(searchInput)}`;
+                alert('❌ ' + result.message);
             }
-            
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'GET'
-                });
-                const result = await response.json();
-
-                loadingDiv.style.display = 'none';
-
-                if (result.success) {
-                    const books = result.data;
-
-                    if (books.length === 0) {
-                        booksGrid.innerHTML = '<div class="no-books">Không tìm thấy sách nào</div>';
-                    } else {
-                        booksGrid.innerHTML = books.map(book => `
-                            <div class="book-card"
-                                data-book-id="${book.bookId}"
-                                data-title="${book.title}"
-                                data-author="${book.author}"
-                                data-publisher="${book.publisher}"
-                                data-year="${book.yearPublished}"
-                                data-genres='${JSON.stringify(book.genres)}'
-                                data-borrow-count="${book.borrowCount}">
-
-                                <div class="book-info"><strong></strong> <img src="${book.imgUrl}" alt="${book.imgUrl}" /></div>
-                                <div class="book-info"><strong>Id:</strong>${book.bookId}</div>
-                                <div class="book-title"><strong>Tên sách:</strong> ${book.title}</div>
-                                <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
-                                <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
-                                <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
-                                <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
-                                <div>
-                                    ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
-                                </div>
-                                <div class="book-actions">
-                                        <button class="borrow-btn" onclick="borrowBook(event, '${book.bookId}')">➕</button>
-                                        <button class="delete-btn" onclick="deleteBook(event, '${book.bookId}')">🗑️</button>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                    booksGrid.style.display = 'grid';
-                } else {
-                    errorDiv.style.display = 'block';
-                    errorDiv.textContent = result.message;
-                }
-            } catch (error) {
-                loadingDiv.style.display = 'none';
-                errorDiv.style.display = 'block';
-                errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
-            }
+        } catch (error) {
+            alert('❌ Lỗi kết nối: ' + error.message);
+        } finally {
+            button.disabled = false;
+            button.textContent = '➕ Mượn sách';
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            checkLoginState();
-            loadAvailableBooks();
+    // Hàm tìm kiếm sách
+    function searchBooks() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+        const filterBy = document.getElementById('searchFilter').value;
+
+        // Lọc danh sách allBooks đã có sẵn
+        const filteredBooks = allBooks.filter(book => {
+            if (!searchTerm) {
+                return true; 
+            }
+            switch (filterBy) {
+                case 'title':
+                    return book.title.toLowerCase().includes(searchTerm);
+                case 'author':
+                    return book.author.toLowerCase().includes(searchTerm);
+                case 'publisher':
+                    return book.publisher.toLowerCase().includes(searchTerm);
+                    return false;
+                case 'all':
+                default:
+                    return book.title.toLowerCase().includes(searchTerm) ||
+                           book.author.toLowerCase().includes(searchTerm) ||
+                           book.publisher.toLowerCase().includes(searchTerm);
+            }
         });
-    </script>
+
+        // Hiển thị kết quả tìm kiếm
+        renderBooks(filteredBooks);
+    }
+    
+    // Khởi tạo trang
+    document.addEventListener('DOMContentLoaded', loadAvailableBooks);
+</script>
 </body>
 </html>

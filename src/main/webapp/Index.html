@@ -52,6 +52,12 @@
             white-space: nowrap;
         }
 
+        .sign a:hover {
+            background-color: #496679;
+            box-shadow: 0 8px 20px rgba(82, 95, 104, 0.605); 
+            border-color: #093149;
+        }
+
         .welcome-screen{
             margin-top: 60px;
             margin-bottom: 30px;
@@ -180,8 +186,8 @@
 </head>
 <body>
     <div class="sign">
-        <a id="authLink" href="#"></a>
-        <a id="logoutBtn" style="display: none;" onclick="handleLogout()">Đăng Xuất</a>
+        <a onclick="goToLogin()">Đăng Nhập</a>
+        <a onclick="goToRegister()">Đăng Ký</a>
     </div>
 
     <div class="welcome-screen">
@@ -206,52 +212,21 @@
         <div class="feature-title">Thêm sách</div>
         <div class="feature-desc">Thêm những cuốn sách mới vào kho</div>
     </div>
-
-    
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const userId = localStorage.getItem('loggedInUserId');
-            const authLink = document.getElementById('authLink');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const welcomeTitle = document.getElementById('welcomeTitle');
-
-            if (userId) {
-                authLink.textContent = userId;
-                authLink.href = '#'; 
-                logoutBtn.style.display = 'block';
-                welcomeTitle.textContent = `Chào Mừng Bạn, ${userId}!`;
-            } else {
-                authLink.textContent = 'Đăng nhập';
-                authLink.href = 'SignInScreen.html';
-                logoutBtn.style.display = 'none';
-            }
-        });
-
+        
         function goToAvailableBookScreen() {
-            document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
-            document.querySelector('.welcome-screen').style.opacity = '0';
-            
-            setTimeout(() => {
-                window.location.href = "AvailableBooks.html";
-            }, 500);
+            alert("Hãy đăng nhập để xem sách trong kho");
         }
 
         function goToBorrowedBookScreen() {
-            document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
-            document.querySelector('.welcome-screen').style.opacity = '0';
-
-            setTimeout(() => {
-                window.location.href = "BorrowedBooks.html";
-            }, 500);
+            alert("Hãy đăng nhập để xem sách đã mượn");
         }
 
         function goToAddBookScreen() {
             document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
             document.querySelector('.welcome-screen').style.opacity = '0';
 
-            setTimeout(() => {
-                window.location.href = "AddBook.html";
-            }, 500);
+            alert("Hãy đăng nhập để thêm sách mới");
         }
 
         function goToLogin() {
@@ -270,12 +245,6 @@
             setTimeout(() => {
                 window.location.href = "RegisterScreen.html";
             }, 500);
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('loggedInUserId');
-            alert('Đã đăng xuất thành công!');
-            window.location.reload(); 
         }
 
         // Hiển thị welcome screen sau 1 giây

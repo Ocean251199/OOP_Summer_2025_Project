@@ -31,36 +31,6 @@
             align-items: center;
         }
 
-        .user-status {
-            position: absolute;
-            top: 20px;
-            right: 100px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #fff;
-        }
-
-        .user-status a, .user-status button {
-            color: #fff;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            transition: background-color 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .user-status a:hover, .user-status button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-        }
-
-        #usernameDisplay {
-            font-weight: 600;
-        }
-
         .header h1 {
             font-size: 2em;
             margin: 0;
@@ -297,11 +267,6 @@
 </head>
 <body>
     <div class="header">
-        <div class="user-status">
-            <span id="usernameDisplay" style="display:none;"></span>
-            <a id="authLink" href="#">Đăng nhập</a>
-            <button id="logoutBtn" style="display:none;" onclick="handleLogout()">Đăng Xuất</button>
-        </div>
         <h1><img src="sachdamuon.png" alt="Borrowed Books Logo"> Library Manage App</h1> 
         <div class="header-bottom">
             <h2>Sách Đã Mượn</h2>
@@ -326,112 +291,68 @@
     </div>
 
     <script>
-        const booksGrid = document.getElementById('books-grid');
-        const loadingDiv = document.getElementById('loading');
-        const errorDiv = document.getElementById('error-message');
-
-
-        function checkLoginState() {
-            const userId = localStorage.getItem('loggedInUserId');
-            const authLink = document.getElementById('authLink');
-            const logoutBtn = document.getElementById('logoutBtn');
-
-            if (userId) {
-                authLink.textContent = userId;
-                authLink.href = '#'; 
-                logoutBtn.style.display = 'block';
-            } else {
-                authLink.textContent = 'Đăng nhập';
-                authLink.href = 'SignInScreen.html';
-                logoutBtn.style.display = 'none';
-            }
-        }
-
-        function handleLogout() {
-            localStorage.removeItem('loggedInUserId');
-            alert('Đã đăng xuất thành công!');
-            window.location.reload(); 
-        }
-
         async function loadBorrowedBooks() {
             const loadingDiv = document.getElementById('loading');
-            const errorDiv = document.getElementById('error');
-            const booksGrid = document.getElementById('books-grid');
+        const errorDiv = document.getElementById('error');
+        const booksGrid = document.getElementById('books-grid');
 
-            try {
-                const response = await fetch('/btl/api/books?type=borrowed', {
-                    method: 'GET'
-                });
-                const result = await response.json();
+        loadingDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+        booksGrid.style.display = 'none';
 
-                loadingDiv.style.display = 'none';
+        try {
+            const response = await fetch('/btl/api/books?type=borrowed');
+            const result = await response.json();
 
-                if (result.success) {
-                    const books = result.data;
-                    
-                    if (books.length === 0) {
-                        booksGrid.innerHTML = '<div class="no-books">Không có sách nào đang được mượn</div>';
-                    } else {
-                        booksGrid.innerHTML = books.map(book => `
-                            <div class="book-card"
-                                data-book-id="${book.bookId}"
-                                data-title="${book.title}"
-                                data-author="${book.author}"
-                                data-publisher="${book.publisher}"
-                                data-year="${book.yearPublished}"
-                                data-genres='${JSON.stringify(book.genres)}'
-                                data-borrow-count="${book.borrowCount}">
-
-                                <div class="book-info"><strong></strong> <img src="${book.imgUrl}" alt="${book.imgUrl}" /></div>
-                                <div class="book-title"><strong>Tên sách:</strong> ${book.title}</div>
-                                <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
-                                <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
-                                <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
-                                <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
-                                <div>
-                                    ${book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('')}
-                                </div>
-                                <div class="book-actions">
-                                        <button class="return-btn" onclick="returnBook(event, '${book.bookId}')">➖</button>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                    
-                    booksGrid.style.display = 'grid';
-                } else {
-                    errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu';
-                    errorDiv.style.display = 'block';
-                }
-            } catch (error) {
-                loadingDiv.style.display = 'none';
-                errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
+            loadingDiv.style.display = 'none';
+            if (result.success && Array.isArray(result.data)) {
+                allBooks = result.data;
+                renderBooks(allBooks);
+            } else {
+                errorDiv.textContent = result.message || 'Có lỗi xảy ra khi tải dữ liệu.';
                 errorDiv.style.display = 'block';
             }
+        } catch (error) {
+            loadingDiv.style.display = 'none';
+            errorDiv.textContent = 'Lỗi kết nối: ' + error.message;
+            errorDiv.style.display = 'block';
         }
+    }
 
-        function getBookDataFromCard(element) {
-            const card = element.closest('.book-card');
-            return {
-                bookId: card.dataset.bookId,
-            };
+    function renderBooks(books) {
+        const booksGrid = document.getElementById('books-grid');
+        if (books.length === 0) {
+            booksGrid.innerHTML = '<div class="no-books">Không có sách nào chưa được mượn.</div>';
+        } else {
+            booksGrid.innerHTML = books.map(book => `
+                <div class="book-card" data-book-id="${book.bookId}">
+                    <img src="${book.imgUrl}" alt="${book.title}" />
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-info"><strong>Tác giả:</strong> ${book.author}</div>
+                    <div class="book-info"><strong>Nhà xuất bản:</strong> ${book.publisher}</div>
+                    <div class="book-info"><strong>Năm xuất bản:</strong> ${book.yearPublished}</div>
+                    <div class="book-info"><strong>Số lần mượn:</strong> ${book.borrowCount}</div>
+                    <div>
+                        ${book.genres ? book.genres.map(genre => `<span class="book-genres">${genre}</span>`).join('') : ''}
+                    </div>
+                    <div class="book-actions">
+                        <button class="borrow-btn" onclick="borrowBook(event, '${book.bookId}')"> ➖ Trả sách</button>
+                    </div>
+                </div>
+            `).join('');
         }
+        booksGrid.style.display = 'grid';
+    }
+
 
         async function returnBook(event, bookId) {
             const button = event.target;
             button.disabled = true;
             button.textContent = '...';
-            const userId = localStorage.getItem('loggedInUserId');
-            if (!userId) {
-                alert('Vui lòng đăng nhập để thực hiện chức năng này.');
-                button.disabled = false;
-                button.textContent = '➖';
-                window.location.href = 'SignInScreen.html'; 
-                return;
-            }
+
             try {
                 const data = {
-                    userId: userId,
+                    userId: 'U001',
                     bookId: bookId
                 };
                 
@@ -459,10 +380,7 @@
         }
 
         // Load books when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            checkLoginState();
-            loadBorrowedBooks();
-        });
+        document.addEventListener('DOMContentLoaded', loadBorrowedBooks);
     </script>
 </body>
 </html>
