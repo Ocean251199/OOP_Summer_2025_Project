@@ -186,13 +186,12 @@
 </head>
 <body>
     <div class="sign">
-        <a onclick="goToLogin()">Đăng Nhập</a>
-        <a onclick="goToRegister()">Đăng Ký</a>
+        <a onclick="handleLogout()">Đăng Xuất</a>
     </div>
 
     <div class="welcome-screen">
         <img src="Gemini_Generated_Image_6s5iy16s5iy16s5i.png" alt="LM Logo">
-        <h1>Chào Mừng Đến Với Library Management System</h1>
+        <h1>Chào Mừng Quay Lại Library Management System</h1>
     </div>
     
     <div class="features">
@@ -215,12 +214,11 @@
     <script>
         
         function goToAvailableBookScreen() {
-<<<<<<< Updated upstream
             document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
             document.querySelector('.welcome-screen').style.opacity = '0';
             
             setTimeout(() => {
-                window.location.href = "ListBooks.html";
+                window.location.href = "AvailableBooks.html";
             }, 500);
         }
 
@@ -229,55 +227,37 @@
             document.querySelector('.welcome-screen').style.opacity = '0';
 
             setTimeout(() => {
-                window.location.href = "FindBook.html";
+                window.location.href = "BorrowedBooks.html";
             }, 500);
-=======
-            alert("Hãy đăng nhập để xem sách trong kho");
-        }
-
-        function goToBorrowedBookScreen() {
-            alert("Hãy đăng nhập để xem sách đã mượn");
->>>>>>> Stashed changes
         }
 
         function goToAddBookScreen() {
             document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
             document.querySelector('.welcome-screen').style.opacity = '0';
 
-<<<<<<< Updated upstream
             setTimeout(() => {
                 window.location.href = "AddBook.html";
             }, 500);
-=======
-            alert("Hãy đăng nhập để thêm sách mới");
->>>>>>> Stashed changes
         }
 
-        function goToLogin() {
-            document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
-            document.querySelector('.welcome-screen').style.opacity = '0';
+        async function handleLogout() {
+            try {
+                const response = await fetch('/btl/api/logout', {
+                    method: 'POST'
+                });
 
-            setTimeout(() => {
-<<<<<<< Updated upstream
-                window.location.href = "LogIn.html";
-=======
-                window.location.href = "SignInScreen.html";
->>>>>>> Stashed changes
-            }, 500);
+                const result = await response.json();
+
+                if (result.success) {
+                    window.location.href = 'SignInScreen.html';
+                } else {
+                    alert(result.message);
+                }
+            } catch (error) {
+                alert('Lỗi kết nối: ' + error.message);
+            }
         }
-
-        function goToRegister() {
-            document.querySelector('.welcome-screen').style.transform = 'translateX(-100%)';
-            document.querySelector('.welcome-screen').style.opacity = '0';
-
-            setTimeout(() => {
-<<<<<<< Updated upstream
-                window.location.href = "Register.html";
-=======
-                window.location.href = "RegisterScreen.html";
->>>>>>> Stashed changes
-            }, 500);
-        }
+        
 
         // Hiển thị welcome screen sau 1 giây
         setTimeout(() => {

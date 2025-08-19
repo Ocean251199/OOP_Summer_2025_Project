@@ -1,15 +1,12 @@
-
 package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dto.*;
+import dto.ApiResponse;
 import service.LibraryService;
 
 @WebServlet("/api/books/return")
@@ -36,25 +33,24 @@ public class ReturnBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            String userId = request.getParameter("userId");
-            String bookId = request.getParameter("bookId");
-
-            // Validate input
-            if (userId == null || userId.trim().isEmpty() ||
-                bookId == null || bookId.trim().isEmpty()) {
-
-                ApiResponse<Object> errorResponse = ApiResponse.error("User ID và Book ID là bắt buộc");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            // Get userId from session (must be logged in)
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("userId") == null) {
+                ApiResponse<Object> errorResponse = ApiResponse.error("Bạn chưa đăng nhập");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
                 return;
             }
 
-            userId = userId.trim();
-            bookId = bookId.trim();
+            String userId = (String) session.getAttribute("userId");
 
-            // Default test user
-            if ("default".equalsIgnoreCase(userId)) {
-                userId = "U001";
+            // Get bookId from URL-encoded form
+            String bookId = request.getParameter("bookId");
+            if (bookId == null || bookId.trim().isEmpty()) {
+                ApiResponse<Object> errorResponse = ApiResponse.error("Book ID là bắt buộc");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+                return;
             }
 
             boolean success = libraryService.returnBook(userId, bookId);
@@ -65,7 +61,8 @@ public class ReturnBookServlet extends HttpServlet {
                 response.getWriter().write(objectMapper.writeValueAsString(successResponse));
             } else {
                 ApiResponse<Object> errorResponse = ApiResponse.error(
-                        "Không thể trả sách. Có thể sách chưa được mượn hoặc user/book không tồn tại.");
+                    "Không thể trả sách. Có thể sách chưa được mượn hoặc user/book không tồn tại."
+                );
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
             }

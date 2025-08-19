@@ -2,9 +2,7 @@ package servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,13 +10,13 @@ import dto.ApiResponse;
 import service.LibraryService;
 
 @WebServlet("/api/books/borrow")
-public class FindBookServlet extends HttpServlet {
+public class BorrowBookServlet extends HttpServlet {
     private LibraryService libraryService;
     private ObjectMapper objectMapper;
 
     @Override
     public void init() throws ServletException {
-        libraryService = LibraryService.getInstance(); // singleton instance
+        libraryService = LibraryService.getInstance();
         objectMapper = new ObjectMapper();
     }
 
@@ -35,26 +33,27 @@ public class FindBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
         try {
-            // Parse JSON body
-            BorrowRequest borrowRequest = objectMapper.readValue(request.getReader(), BorrowRequest.class);
-            String userId = borrowRequest.getUserId();
-            String bookId = borrowRequest.getBookId();
+            // Get userId from session (must be logged in)
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("userId") == null) {
+                ApiResponse<Object> errorResponse = ApiResponse.error("Bạn chưa đăng nhập");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+                return;
+            }
 
-            // Validate input
-            if (userId == null || userId.trim().isEmpty() ||
-                bookId == null || bookId.trim().isEmpty()) {
+            String userId = (String) session.getAttribute("userId");
 
-                ApiResponse<Object> errorResponse = ApiResponse.error("User ID và Book ID là bắt buộc");
+            // Get bookId from URL-encoded form
+            String bookId = request.getParameter("bookId");
+            if (bookId == null || bookId.trim().isEmpty()) {
+                ApiResponse<Object> errorResponse = ApiResponse.error("Book ID là bắt buộc");
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
                 return;
             }
 
-            // Default test user
-            if ("default".equalsIgnoreCase(userId.trim())) {
-                userId = "U001";
-            }
-
+            // Attempt to borrow book
             boolean success = libraryService.borrowBook(userId, bookId);
 
             if (success) {
@@ -62,7 +61,9 @@ public class FindBookServlet extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.getWriter().write(objectMapper.writeValueAsString(successResponse));
             } else {
-                ApiResponse<Object> errorResponse = ApiResponse.error("Không thể mượn sách. Có thể sách đã được mượn trước đó.");
+                ApiResponse<Object> errorResponse = ApiResponse.error(
+                    "Không thể mượn sách. Có thể sách đã được mượn trước đó."
+                );
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
             }
@@ -81,17 +82,5 @@ public class FindBookServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type");
         response.setStatus(HttpServletResponse.SC_OK);
-    }
-
-    // --- Helper DTO for parsing JSON ---
-    public static class BorrowRequest {
-        private String userId;
-        private String bookId;
-
-        public String getUserId() { return userId; }
-        public void setUserId(String userId) { this.userId = userId; }
-
-        public String getBookId() { return bookId; }
-        public void setBookId(String bookId) { this.bookId = bookId; }
     }
 }

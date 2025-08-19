@@ -178,4 +178,59 @@ public class BookDAO {
             e.printStackTrace();
         }
     }
+
+    public List<Book> searchBooks(String term, String filter) {
+        List<Book> books = new ArrayList<>();
+        String sql;
+
+        switch (filter != null ? filter.toLowerCase() : "all") {
+            case "title":
+                sql = "SELECT * FROM books WHERE LOWER(book_title) LIKE ?";
+                break;
+            case "author":
+                sql = "SELECT * FROM books WHERE LOWER(book_author) LIKE ?";
+                break;
+            case "publisher":
+                sql = "SELECT * FROM books WHERE LOWER(publisher) LIKE ?";
+                break;
+            case "all":
+            default:
+                sql = "SELECT * FROM books WHERE LOWER(book_title) LIKE ? OR LOWER(book_author) LIKE ? OR LOWER(publisher) LIKE ?";
+                break;
+        }
+
+        try (Connection conn = DBHelper.connect();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            String searchTerm = "%" + term + "%";
+
+            if ("all".equals(filter) || filter == null) {
+                stmt.setString(1, searchTerm);
+                stmt.setString(2, searchTerm);
+                stmt.setString(3, searchTerm);
+            } else {
+                stmt.setString(1, searchTerm);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Book book = new Book(
+                        rs.getString("bookId"),
+                        rs.getString("isbn"),
+                        rs.getString("book_title"),
+                        rs.getString("book_author"),
+                        rs.getString("publisher"),
+                        rs.getInt("year_of_publication"),
+                        rs.getInt("borrowCount"),
+                        rs.getString("image_url_m")
+                );
+                books.add(book);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return books;
+    }
 }

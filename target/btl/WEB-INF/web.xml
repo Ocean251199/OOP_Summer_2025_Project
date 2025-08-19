@@ -7,7 +7,11 @@
 
   <!-- Welcome file -->
   <welcome-file-list>
+<<<<<<< Updated upstream
     <welcome-file>LogIn.html</welcome-file>
+=======
+    <welcome-file>Index.html</welcome-file>
+>>>>>>> Stashed changes
   </welcome-file-list>
 
   <!-- BooksServlet: get list of books -->
@@ -22,11 +26,19 @@
 
   <!-- FindBookServlet / BorrowBookServlet -->
   <servlet>
+<<<<<<< Updated upstream
     <servlet-name>FindBookServlet</servlet-name>
     <servlet-class>servlet.FindBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FindBookServlet</servlet-name>
+=======
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-class>servlet.BorrowBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BorrowBookServlet</servlet-name>
+>>>>>>> Stashed changes
     <url-pattern>/api/books/borrow</url-pattern>
   </servlet-mapping>
 
@@ -70,4 +82,17 @@
     <url-pattern>/api/login</url-pattern>
   </servlet-mapping>
 
+<<<<<<< Updated upstream
+=======
+  <!-- SearchBooksServlet -->
+  <servlet>
+    <servlet-name>SearchBooksServlet</servlet-name>
+    <servlet-class>servlet.SearchBooksServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchBooksServlet</servlet-name>
+    <url-pattern>/api/books/search</url-pattern>
+  </servlet-mapping>
+
+>>>>>>> Stashed changes
 </web-app>

@@ -113,6 +113,22 @@ public class LibraryService {
                     .collect(Collectors.toList());
     }
 
+    public List<BookDTO> searchBooks(String term, String filter) {
+        if (term == null || term.trim().isEmpty()) {
+            return getAllBooks(); // fallback to all books
+        }
+
+        term = term.toLowerCase().trim();
+
+        // Delegate to DAO to search in the database
+        List<Book> books = bookDAO.searchBooks(term, filter);
+
+        return books.stream()
+                    .map(this::mapToDTO)
+                    .collect(Collectors.toList());
+    }
+
+
     // ---------------- Borrow / Return ----------------
     public boolean borrowBook(String userId, String bookId) {
         User user = userDAO.getUserById(userId);

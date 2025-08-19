@@ -22,11 +22,11 @@
 
   <!-- FindBookServlet / BorrowBookServlet -->
   <servlet>
-    <servlet-name>FindBookServlet</servlet-name>
-    <servlet-class>servlet.FindBookServlet</servlet-class>
+    <servlet-name>BorrowBookServlet</servlet-name>
+    <servlet-class>servlet.BorrowBookServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>FindBookServlet</servlet-name>
+    <servlet-name>BorrowBookServlet</servlet-name>
     <url-pattern>/api/books/borrow</url-pattern>
   </servlet-mapping>
 
@@ -68,6 +68,16 @@
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/api/login</url-pattern>
+  </servlet-mapping>
+
+  <!-- SearchBooksServlet -->
+  <servlet>
+    <servlet-name>SearchBooksServlet</servlet-name>
+    <servlet-class>servlet.SearchBooksServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchBooksServlet</servlet-name>
+    <url-pattern>/api/books/search</url-pattern>
   </servlet-mapping>
 
 </web-app>
